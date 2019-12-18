@@ -24,4 +24,16 @@ defmodule CoordinateTest do
     assert Coordinate.move({1, 0}, :W) == {0, 0}
     assert Coordinate.move({1, 2}, :S) == {1, 1}
   end
+
+  test "Move throws if argument is not a direction" do
+    assert_raise ArgumentError, fn ->
+      Coordinate.move({0, 0}, :Z)
+    end
+    assert_raise ArgumentError, fn ->
+      Coordinate.move({0, 1}, "Blah")
+    end
+    assert_raise ArgumentError, fn ->
+      Coordinate.move({1, 0}, -1)
+    end
+  end
 end

@@ -33,14 +33,26 @@ defmodule DirectionTest do
   end
 
   test "Turn left throws if given invalid data" do
-    assert_raise ArgumentError, Direction.turn_left(:Not_valid)
-    assert_raise ArgumentError, Direction.turn_left(0)
-    assert_raise ArgumentError, Direction.turn_left("E")
+    assert_raise ArgumentError, fn -> 
+        Direction.turn_left(:Not_valid)
+    end
+    assert_raise ArgumentError, fn ->
+      Direction.turn_left(0)
+    end
+    assert_raise ArgumentError, fn ->
+      Direction.turn_left("E")
+    end
   end
 
   test "Turn right throws if given invalid data" do
-    assert_raise ArgumentError, Direction.turn_right(:Not_valid)
-    assert_raise ArgumentError, Direction.turn_right(0)
-    assert_raise ArgumentError, Direction.turn_left("W")
+    assert_raise ArgumentError, fn ->
+      Direction.turn_right(:Not_valid)
+    end
+    assert_raise ArgumentError, fn ->
+      Direction.turn_right(0)
+    end
+    assert_raise ArgumentError, fn ->
+      Direction.turn_left("W")
+    end
   end
 end
