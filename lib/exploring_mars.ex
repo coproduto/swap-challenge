@@ -11,15 +11,15 @@ defmodule ExploringMars do
 
   ## Examples
 
-      iex> ExploringMars.explore({1, 1}, {0, 0, :N}, [:M])
+      iex> ExploringMars.explore({1, 1}, {{0, 0}, :N}, [:M])
       {:ok, {0, 1, :N}}
 
   """
   @spec explore(
-    {non_neg_integer(), non_neg_integer()},
-    {non_neg_integer(), non_neg_integer(), atom()},
+    Coordinate.t,
+    Position.t,
     list(atom())
-  ) :: {atom(), {integer(), integer(), atom()}}
+  ) :: {atom(), Coordinate.t}
   def explore(upperRightLimit, startingPosition, instructions) do
     :not_implemented
   end
