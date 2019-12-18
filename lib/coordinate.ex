@@ -22,12 +22,22 @@ defmodule Coordinate do
   """
   @spec from_strings(String.t, String.t) :: {:ok, t} | {:no_parse, String.t}
   def from_strings(x_string, y_string) do
-    x = Integer.parse(x_string)
-    y = Integer.parse(y_string)
+    x = safe_parse_integer(x_string)
+    y = safe_parse_integer(y_string)
     case {x, y} do
       {{x_val, ""}, {y_val, ""}} -> # we require parsing to be exact -
         {:ok, {x_val, y_val}}       # no remaining characters!
       _ -> {:no_parse, "{#{x_string}, #{y_string}}"}
+    end
+  end
+
+  # Integer.parse can throw in many situations. This can lead to unexpected
+  # cases which we wish to avoid.
+  defp safe_parse_integer(string) do
+    try do
+      Integer.parse(string)
+    rescue
+      _ -> :no_parse
     end
   end
 
