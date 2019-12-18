@@ -13,9 +13,9 @@ defmodule CoordinateTest do
   end
 
   test "Parse invalid numbers returns error" do
-    assert Coordinate.from_strings("x", "y")  == {:no_parse, "(x, y)"}
-    assert Coordinate.from_strings("0", "0x") == {:no_parse, "(0, 0x)"}
-    assert Coordinate.from_strings("0x", "0") == {:no_parse, "(0x, 0)"}
+    assert Coordinate.from_strings("x", "y")  == {:no_parse, "{x, y}"}
+    assert Coordinate.from_strings("0", "0x") == {:no_parse, "{0, 0x}"}
+    assert Coordinate.from_strings("0x", "0") == {:no_parse, "{0x, 0}"}
   end
 
   test "Moves coordinates along specified directions" do

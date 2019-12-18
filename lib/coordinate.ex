@@ -12,17 +12,44 @@ defmodule Coordinate do
   @doc """
   Takes a pair of strings, `x_string` and `y_string` and tries to 
   parse them as a coordinate.
+
+  ## Examples
+
+     iex> Coordinate.from_strings("100", "200")
+     {:ok, {100, 200}}
+     iex> Coordinate.from_strings("100x", "200y")
+     {:no_parse, "{100x, 200y}"}
   """
   @spec from_strings(String.t, String.t) :: {:ok, t} | {:no_parse, String.t}
   def from_strings(x_string, y_string) do
-    :not_implemented
+    x = Integer.parse(x_string)
+    y = Integer.parse(y_string)
+    case {x, y} do
+      {{x_val, ""}, {y_val, ""}} -> # we require parsing to be exact -
+        {:ok, {x_val, y_val}}       # no remaining characters!
+      _ -> {:no_parse, "{#{x_string}, #{y_string}}"}
+    end
   end
 
   @doc """
   Moves a `coordinate` along a `direction`.
+
+  ## Examples
+
+     iex> Coordinate.move({-1, 0}, :E)
+     {0, 0}
+     iex> Coordinate.move({0, 0}, "Not a direction")
+     ** (ArgumentError) argument is not a direction
   """
   @spec move(t, Direction.t) :: t
-  def move(coordinate, direction) do
-    :not_implemented
+  def move(coordinate, direction)
+  def move({x, y}, direction) do
+    case direction do
+      :N -> {x,   y+1}
+      :E -> {x+1, y  }
+      :W -> {x-1, y  }
+      :S -> {x,   y-1}
+      _ -> raise ArgumentError, message: "argument is not a direction"
+    end
   end
 end
