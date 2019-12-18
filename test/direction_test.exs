@@ -14,7 +14,8 @@ defmodule DirectionTest do
   end
 
   test "Parse invalid string returns error" do
-    assert Direction.from_string("Not valid") == {:no_parse, "Not valid"}
+    assert Direction.from_string("Not valid")   == {:no_parse, "Not valid"}
+    assert Direction.from_string(:not_a_string) == {:no_parse, :not_a_string}
   end
 
   test "Turn left turns to the left" do
@@ -29,5 +30,17 @@ defmodule DirectionTest do
     assert Direction.turn_right(:E) == :S
     assert Direction.turn_right(:W) == :N
     assert Direction.turn_right(:S) == :W
+  end
+
+  test "Turn left throws if given invalid data" do
+    assert_raise ArgumentError, Direction.turn_left(:Not_valid)
+    assert_raise ArgumentError, Direction.turn_left(0)
+    assert_raise ArgumentError, Direction.turn_left("E")
+  end
+
+  test "Turn right throws if given invalid data" do
+    assert_raise ArgumentError, Direction.turn_right(:Not_valid)
+    assert_raise ArgumentError, Direction.turn_right(0)
+    assert_raise ArgumentError, Direction.turn_left("W")
   end
 end
