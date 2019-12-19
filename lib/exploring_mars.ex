@@ -7,49 +7,56 @@ defmodule ExploringMars do
   """
 
   defp parser_options do
-    [ strict: [ file: :string ],
-      aliases: [ f: :file ]
+    [ strict: [ file: :string, output: :string ],
+      aliases: [ f: :file, o: :output ]
     ]
   end
 
-  defp openInput(nil), do: {:ok, :stdio}
-  defp openInput(path) do
+  defp open_file_or_stdio(nil), do: {:ok, :stdio}
+  defp open_file_or_stdio(path) do
     File.open(path, :utf8)
   end
-  
+
   def main(args \\ []) do
     {opts, _, _} = OptionParser.parse(args, parser_options())
 
-    path = Keyword.get(opts, :file)
-    case openInput(path) do
-      {:ok, device} -> run_missions(device)
-      {:error, error} -> IO.puts("Error opening input: " <> error)
+    input = Keyword.get(opts, :file)
+    output = Keyword.get(opts, :output)
+    with {:ok, input_device} <- open_file_or_stdio(input),
+         {:ok, output_device} <- open_file_or_stdio(output)
+    do
+      run_missions(input_device, output_device)
+    else
+      {:error, err} -> IO.puts("Error opening device: " <> inspect err)
     end
   end
 
-  defp run_missions(device) do
-    case read_bounds(device) do
+  defp run_missions(input, output) do
+    case read_bounds(input) do
       {:ok, bounds} ->
-        run_missions_in_bounds(bounds, device, 1)
+        run_missions_in_bounds(bounds, input, output)
+        File.close(input)
+        File.close(output)
       err -> IO.puts("Invalid bounds: " <> inspect(err))
     end
   end
 
-  defp run_missions_in_bounds(bounds, device, count) do
-    case read_position(device) do
+  defp run_missions_in_bounds(bounds, input, output) do
+    case read_position(input) do
       :eof -> :ok
       {:ok, position} ->
-        case read_instructions(device) do
+        case read_instructions(input) do
           :eof -> IO.puts("Unexpected end of file")
           {:ok, instructions} ->
-            IO.puts(inspect(Mission.run(bounds, position, instructions)))
-            run_missions_in_bounds(bounds, device, count + 1)
+            result = Mission.run(bounds, position, instructions)
+            IO.write(output, Mission.result_to_string(result))
+            run_missions_in_bounds(bounds, input, output)
           err -> IO.puts("Unexpected error: " <> (inspect err))
         end
       err -> IO.puts("Unexpected error: " <> (inspect err))
     end
   end
-  
+
   defp read_bounds(device) do
     with line <- IO.read(device, :line),
          [x, y] <- String.split(line, " ")
