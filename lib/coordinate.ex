@@ -1,6 +1,17 @@
 defmodule Coordinate do
   @moduledoc """
   This module defines functions that create and operate on coordinates.
+
+  This module and the `Direction` module should change if the 
+  coordinate representation used in the problem changes - for instance, 
+  if we choose to use {y, x} coordinates instead of {x, y} or if we choose 
+  to model a probe moving in 3D space.
+
+  This means this module is coupled to the `Direction` model, as it depends
+  directly on the representation of the `Direction.t` type. This is acceptable
+  for now, as the `Direction.t` type is quite simple, but it might need
+  change. Check the note in the documentation of the `Direction` module for
+  further details.
   """
 
   @typedoc """
@@ -29,10 +40,6 @@ defmodule Coordinate do
         {:ok, {x_val, y_val}}       # no remaining characters!
       _ -> {:no_parse, "{#{x_string}, #{y_string}}"}
     end
-  end
-
-  def pretty_print({x, y}) do
-    "#{x} #{y}"
   end
 
   # Integer.parse can throw in many situations. This can lead to unexpected
@@ -65,5 +72,14 @@ defmodule Coordinate do
       :S -> {x,   y-1}
       _ -> raise ArgumentError, message: "argument is not a direction"
     end
+  end
+
+  @doc """
+  Converts a `coordinate` into a representation suitable for user-facing output.
+  """
+  @spec pretty_print(t) :: String.t
+  def pretty_print(coordinate)
+  def pretty_print({x, y}) do
+    "#{x} #{y}"
   end
 end

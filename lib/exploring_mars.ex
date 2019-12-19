@@ -4,19 +4,27 @@ defmodule ExploringMars do
 
   Contains mainly functions dealing with file and command-line IO.
   Should be the only module in the project to contain impure functions.
+
+  Most functions in this module should be private, as it should only
+  expose the full command-line interface.
   """
 
-  defp parser_options do
-    [ strict: [ file: :string, output: :string ],
-      aliases: [ f: :file, o: :output ]
-    ]
-  end
+  @doc """
+  The main program entry point.
 
-  defp open_file_or_stdio(nil), do: {:ok, :stdio}
-  defp open_file_or_stdio(path) do
-    File.open(path, :utf8)
-  end
+  Takes the following command-line arguments:
 
+    * --file, -f: Should be a string specifying a file path.
+    The mission commands will be read from this file. If not specified,
+    the program will read from standard input.
+
+    * --output, -o: Should be a string specifying a file path.
+    The mission results for each specified probe will be output to this
+    file. If not specified, the program will write to standard output.
+
+  If called in interactive mode, the arguments should be passed as a list
+  of strings.
+  """
   def main(args \\ []) do
     {opts, _, _} = OptionParser.parse(args, parser_options())
 
@@ -31,6 +39,25 @@ defmodule ExploringMars do
     end
   end
 
+  # definition of command-line parameters
+  @spec parser_options :: Keyword.t
+  defp parser_options do
+    [ strict: [ file: :string, output: :string ],
+      aliases: [ f: :file, o: :output ]
+    ]
+  end
+
+  # if input or output files are not specified, use :stdio.
+  @spec open_file_or_stdio(
+    nil | Path.t
+  ) :: {:ok, File.io_device} | {:error, File.posix}
+  defp open_file_or_stdio(nil), do: {:ok, :stdio}
+  defp open_file_or_stdio(path) do
+    File.open(path, :utf8)
+  end
+
+  # read bounds and then run missions
+  @spec run_missions(File.io_device, File.io_device) :: :ok
   defp run_missions(input, output) do
     case read_bounds(input) do
       {:ok, bounds} ->
@@ -41,6 +68,12 @@ defmodule ExploringMars do
     end
   end
 
+  # run 0 to N missions, given bounds
+  @spec run_missions_in_bounds(
+    Coordinate.t,
+    File.io_device,
+    File.io_device
+  ) :: :ok
   defp run_missions_in_bounds(bounds, input, output) do
     case read_position(input) do
       :eof -> :ok
@@ -51,12 +84,14 @@ defmodule ExploringMars do
             result = Mission.run(bounds, position, instructions)
             IO.write(output, Mission.result_to_string(result))
             run_missions_in_bounds(bounds, input, output)
-          err -> IO.puts("Unexpected error: " <> (inspect err))
+          err -> IO.write(output, "Unexpected error: " <> (inspect err))
         end
-      err -> IO.puts("Unexpected error: " <> (inspect err))
+      err -> IO.write(output, "Unexpected error: " <> (inspect err))
     end
   end
 
+  # read bounds from input file
+  @spec read_bounds(File.io_device) :: {:ok, Coordinate.t} | term
   defp read_bounds(device) do
     with line <- IO.read(device, :line),
          [x, y] <- String.split(line, " ")
@@ -68,6 +103,8 @@ defmodule ExploringMars do
     end
   end
 
+  # read position from input file
+  @spec read_position(File.io_device) :: {:ok, Position.t} | term
   defp read_position(device) do
     with line <- IO.read(device, :line),
          [sx, sy, dir] <- String.split(line, " ")
@@ -79,6 +116,8 @@ defmodule ExploringMars do
     end
   end
 
+  # read instructions from input file as list
+  @spec read_instructions(File.io_device) :: {:ok, list(Instruction.t)} | term
   defp read_instructions(device) do
     case IO.read(device, :line) do
       :eof -> :eof

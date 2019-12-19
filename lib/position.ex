@@ -1,6 +1,10 @@
 defmodule Position do
   @moduledoc """
   This module defines functions that operate on the probe's position.
+
+  This module should change if the way a position is specified changes.
+  For instance, if we had 3D space instead of 2D, or further degrees of
+  freedom. See the notes in the `Coordinate` and `Direction` modules.
   """
 
   @typedoc """
@@ -36,10 +40,9 @@ defmodule Position do
     end
   end
 
-  def pretty_print({coord, dir}) do
-    "#{Coordinate.pretty_print(coord)} #{Direction.pretty_print(dir)}"
-  end
-
+  # Takes a potential error tuple and converts it into a description
+  # if it is indeed an error
+  @spec get_error({atom, term}, (term -> String.t)) :: String.t
   defp get_error({err, data}, desc) do
     if err != :ok do
       "ERROR: " <> desc.(data)
@@ -76,5 +79,14 @@ defmodule Position do
   def turn_right(position)
   def turn_right({coordinate, direction}) do
     {coordinate, Direction.turn_right(direction)}
+  end
+
+  @doc """
+  Converts a `position` into a representation suitable for user-facing output.
+  """
+  @spec pretty_print(t) :: String.t
+  def pretty_print(position)
+  def pretty_print({coord, dir}) do
+    "#{Coordinate.pretty_print(coord)} #{Direction.pretty_print(dir)}"
   end
 end

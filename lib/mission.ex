@@ -5,6 +5,8 @@ defmodule Mission do
   probe and probe `instructions`. Calling `Mission.run` with these parameters
   will produce the status in which the probe ended (mission outcome -- see
   below), together with the final position of the probe.
+
+  This module should change if the way a mission is represented changes.
   """
 
   @typedoc """
@@ -22,16 +24,22 @@ defmodule Mission do
   """
   @type outcome :: :ok | :out_of_bounds | :illegal_instruction
 
+  @typedoc """
+  A mission's result is its outcome together with its final position.
+  See the `outcome` type's documentation above for further details.
+  """
+  @type result :: {outcome, Position.t}
+
   @doc """
   Run a mission by setting its parameters. Returns mission outcome and final
   position. Each outcome specifies how its final position should be interpreted.
-  Check the `outcome` documentation above for details.
+  Check the `outcome` documentation above for further details.
   """
   @spec run(
     Coordinate.t,
     Position.t,
     list(Instruction.t)
-  ) :: {outcome, Position.t}
+  ) :: result
   def run(bounds, position, instructions) do
     coordinate = position |> elem(0)
     if in_bounds(bounds, coordinate) do
@@ -41,14 +49,18 @@ defmodule Mission do
     end
   end
 
+  # run a mission when we know the initial position is in bounds.
+  # the reason we delegate to this function is so that we only need
+  # to bounds check after running each instructions, instead of bounds
+  # checking before *and* after running each instruction.
   @spec do_run(
     Coordinate.t,
     Position.t,
     list(Instruction.t)
-  ) :: {outcome, Position.t}
+  ) :: result
   defp do_run(_bounds, position, []), do: {:ok, position}
   defp do_run(bounds, position, [instruction | rest]) do
-    case Probe.run_instruction(position, instruction) do
+    case Instruction.run(position, instruction) do
       :invalid_instruction -> {:invalid_instruction, position}
       {coord, direction} -> if in_bounds(bounds, coord) do
         do_run(bounds, {coord, direction}, rest)
@@ -58,6 +70,18 @@ defmodule Mission do
     end
   end
 
+  # Checks if a coordinate is in-bounds.
+  @spec in_bounds(Coordinate.t, Coordinate.t) :: as_boolean(atom)
+  defp in_bounds({x_max, y_max}, {x, y}) do
+    x >= 0 && y >= 0 && x <= x_max && y <= y_max
+  end
+
+  @doc """
+  Converts the result of a mission into a string suitable for user-facing
+  output.
+  """
+  @spec result_to_string(result) :: String.t
+  def result_to_string(mission_result)
   def result_to_string({outcome, position}) do
     output = case outcome do
                :ok -> Position.pretty_print(position)
@@ -67,11 +91,5 @@ defmodule Mission do
                  "ILLEGAL INSTRUCTION @ #{Position.pretty_print(position)}"
              end
     output <> "\n"
-  end
-
-  # This module-private function serves to check if a coordinate is in-bounds.
-  @spec in_bounds(Coordinate.t, Coordinate.t) :: as_boolean(atom)
-  defp in_bounds({x_max, y_max}, {x, y}) do
-    x >= 0 && y >= 0 && x <= x_max && y <= y_max
   end
 end
