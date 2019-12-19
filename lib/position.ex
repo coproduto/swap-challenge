@@ -36,6 +36,10 @@ defmodule Position do
     end
   end
 
+  def pretty_print({coord, dir}) do
+    "#{Coordinate.pretty_print(coord)} #{Direction.pretty_print(dir)}"
+  end
+
   defp get_error({err, data}, desc) do
     if err != :ok do
       "ERROR: " <> desc.(data)

@@ -10,7 +10,7 @@ defmodule Coordinate do
   @type t :: {integer, integer}
 
   @doc """
-  Takes a pair of strings, `x_string` and `y_string` and tries to 
+  Takes a pair of strings, `x_string` and `y_string` and tries to
   parse them as a coordinate.
 
   ## Examples
@@ -29,6 +29,10 @@ defmodule Coordinate do
         {:ok, {x_val, y_val}}       # no remaining characters!
       _ -> {:no_parse, "{#{x_string}, #{y_string}}"}
     end
+  end
+
+  def pretty_print({x, y}) do
+    "#{x} #{y}"
   end
 
   # Integer.parse can throw in many situations. This can lead to unexpected

@@ -21,7 +21,7 @@ defmodule Direction do
       {:no_parse, "Not a direction"}
   """
   @spec from_string(String.t) :: {:ok, t} | {:no_parse, String.t}
-  def from_string(string) do    
+  def from_string(string) do
     case string do
       "N" -> {:ok, :N}
       "E" -> {:ok, :E}
@@ -31,16 +31,18 @@ defmodule Direction do
     end
   end
 
+  def pretty_print(direction), do: Atom.to_string(direction)
+
   @doc """
   Takes a `direction` and returns the direction obtained by turning left.
 
   ## Examples
-  
+
      iex> Direction.turn_left(:N)
      :W
      iex> Direction.turn_left(:Not_a_direction)
      ** (ArgumentError) argument is not a direction
-  
+
   """
   @spec turn_left(t) :: t
   def turn_left(direction) do
@@ -57,7 +59,7 @@ defmodule Direction do
   Takes a `direction` and returns the direction obtained by turning right.
 
   ## Examples
-  
+
      iex> Direction.turn_right(:N)
      :E
      iex> Direction.turn_right(:Not_a_direction)

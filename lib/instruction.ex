@@ -4,7 +4,7 @@ defmodule Instruction do
   """
 
   @typedoc """
-  A single instruction, one of :L, :R, :M, representing "Turn left", 
+  A single instruction, one of :L, :R, :M, representing "Turn left",
   "Turn right", and "Move forward", respectively. Use as `Instruction.t`.
   """
   @type t :: :L | :R | :M

@@ -1,9 +1,9 @@
 defmodule Mission do
   @moduledoc """
   This module defines the concept of a "mission". A mission is defined by a set
-  of parameters to the problem - upper-right `bounds`, `initialPosition` of the 
+  of parameters to the problem - upper-right `bounds`, `initialPosition` of the
   probe and probe `instructions`. Calling `Mission.run` with these parameters
-  will produce the status in which the probe ended (mission outcome -- see 
+  will produce the status in which the probe ended (mission outcome -- see
   below), together with the final position of the probe.
   """
 
@@ -16,7 +16,7 @@ defmodule Mission do
     will be the position the probe was attempting to move to when it fell off.
 
   * :illegal_instruction -> The probe tried to execute something that was not
-  a valid instruction. The position reported will be the position where the 
+  a valid instruction. The position reported will be the position where the
   probe was when it executed the invalid instruction.
 
   """
@@ -57,7 +57,18 @@ defmodule Mission do
       end
     end
   end
-  
+
+  def result_to_string({outcome, position}) do
+    output = case outcome do
+               :ok -> Position.pretty_print(position)
+               :out_of_bounds ->
+                 "OUT OF BOUNDS @ #{Position.pretty_print(position)}"
+               :illegal_instruction ->
+                 "ILLEGAL INSTRUCTION @ #{Position.pretty_print(position)}"
+             end
+    output <> "\n"
+  end
+
   # This module-private function serves to check if a coordinate is in-bounds.
   @spec in_bounds(Coordinate.t, Coordinate.t) :: as_boolean(atom)
   defp in_bounds({x_max, y_max}, {x, y}) do
