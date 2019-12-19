@@ -1,6 +1,9 @@
 defmodule ExploringMars do
   @moduledoc """
   Top-level module, encapsulating the entire solution.
+
+  Contains mainly functions dealing with file and command-line IO.
+  Should be the only module in the project to contain impure functions.
   """
 
   defp parser_options do
@@ -34,7 +37,7 @@ defmodule ExploringMars do
 
   defp run_missions_in_bounds(bounds, device, count) do
     case read_position(device) do
-      :eof -> nil
+      :eof -> :ok
       {:ok, position} ->
         case read_instructions(device) do
           :eof -> IO.puts("Unexpected end of file")
@@ -73,7 +76,11 @@ defmodule ExploringMars do
     case IO.read(device, :line) do
       :eof -> :eof
       {:error, err} -> {:error, err}
-      line -> {:ok, String.split(line, " ")}
+      line ->
+        instructions = String.trim(line, "\n")
+        |> String.split(" ")
+        |> Enum.map(&Instruction.from_string/1)
+        {:ok, instructions}
     end
   end
 end
