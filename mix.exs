@@ -7,7 +7,8 @@ defmodule ExplorandoMarte.MixProject do
       version: "0.1.0",
       elixir: "~> 1.9",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      escript: escript(),
     ]
   end
 
@@ -16,6 +17,10 @@ defmodule ExplorandoMarte.MixProject do
     [
       extra_applications: [:logger]
     ]
+  end
+
+  def escript do
+    [ main_module: ExploringMars ]
   end
 
   # Run "mix help deps" to learn about dependencies.

@@ -22,3 +22,5 @@ erl_crash.dump
 # Ignore package tarball (built via "mix hex.build").
 explorando_marte-*.tar
 
+# Escript output binary
+exploring_mars
