@@ -30,8 +30,8 @@ defmodule ExploringMars do
 
     input = Keyword.get(opts, :file)
     output = Keyword.get(opts, :output)
-    with {:ok, input_device} <- open_file_or_stdio(input),
-         {:ok, output_device} <- open_file_or_stdio(output)
+    with {:ok, input_device} <- open_file_or_stdio(input, :read),
+         {:ok, output_device} <- open_file_or_stdio(output, :write)
     do
       run_missions(input_device, output_device)
     else
@@ -49,11 +49,12 @@ defmodule ExploringMars do
 
   # if input or output files are not specified, use :stdio.
   @spec open_file_or_stdio(
-    nil | Path.t
+    nil | Path.t,
+    File.mode
   ) :: {:ok, File.io_device} | {:error, File.posix}
-  defp open_file_or_stdio(nil), do: {:ok, :stdio}
-  defp open_file_or_stdio(path) do
-    File.open(path, :utf8)
+  defp open_file_or_stdio(nil, _), do: {:ok, :stdio}
+  defp open_file_or_stdio(path, mode) do
+    File.open(path, [mode, :utf8])
   end
 
   # read bounds and then run missions
