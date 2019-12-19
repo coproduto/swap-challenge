@@ -87,8 +87,8 @@ defmodule Mission do
                :ok -> Position.pretty_print(position)
                :out_of_bounds ->
                  "OUT OF BOUNDS @ #{Position.pretty_print(position)}"
-               :illegal_instruction ->
-                 "ILLEGAL INSTRUCTION @ #{Position.pretty_print(position)}"
+               :invalid_instruction ->
+                 "INVALID INSTRUCTION @ #{Position.pretty_print(position)}"
              end
     output <> "\n"
   end

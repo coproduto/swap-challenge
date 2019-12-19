@@ -93,7 +93,7 @@ defmodule ExploringMars do
   # read bounds from input file
   @spec read_bounds(File.io_device) :: {:ok, Coordinate.t} | term
   defp read_bounds(device) do
-    with line <- IO.read(device, :line),
+    with line when line != :eof <- IO.read(device, :line),
          [x, y] <- String.split(line, " ")
     do
       Coordinate.from_strings(x, String.trim(y, "\n"))
@@ -106,7 +106,7 @@ defmodule ExploringMars do
   # read position from input file
   @spec read_position(File.io_device) :: {:ok, Position.t} | term
   defp read_position(device) do
-    with line <- IO.read(device, :line),
+    with line when line != :eof <- IO.read(device, :line),
          [sx, sy, dir] <- String.split(line, " ")
     do
       Position.from_strings(sx, sy, String.trim(dir, "\n"))
