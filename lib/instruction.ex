@@ -12,12 +12,12 @@ defmodule Instruction do
   @doc """
   Takes a `string` and tries to parse it as an instruction.
   """
-  @spec from_string(String.t) :: {:ok, t} | {:no_parse, String.t}
+  @spec from_string(String.t) :: t | {:no_parse, String.t}
   def from_string(string) do
     case string do
-      "L" -> {:ok, :L}
-      "R" -> {:ok, :R}
-      "M" -> {:ok, :M}
+      "L" -> :L
+      "R" -> :R
+      "M" -> :M
       _   -> {:no_parse, string}
     end
   end

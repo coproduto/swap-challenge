@@ -7,9 +7,9 @@ defmodule InstructionTest do
   doctest Instruction
 
   test "Parse valid string returns instruction" do
-    assert Instruction.from_string("L") == {:ok, :L}
-    assert Instruction.from_string("R") == {:ok, :R}
-    assert Instruction.from_string("M") == {:ok, :M}
+    assert Instruction.from_string("L") == :L
+    assert Instruction.from_string("R") == :R
+    assert Instruction.from_string("M") == :M
   end
 
   test "Parse invalid string returns error" do
