@@ -7,8 +7,10 @@ defmodule Probe do
   Takes a probe position and an instruction and returns the next position of the
   probe.
   """
-  @spec run_instruction(Position.t, Instruction.t)
-    :: Position.t | :invalid_instruction
+  @spec run_instruction(
+    Position.t,
+    Instruction.t
+  ) :: Position.t | :invalid_instruction
   def run_instruction(position, instruction) do
     case instruction do
       :L -> Position.turn_left(position)
