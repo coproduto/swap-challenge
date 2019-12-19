@@ -14,6 +14,11 @@ defmodule Instruction do
   """
   @spec from_string(String.t) :: {:ok, t} | {:no_parse, String.t}
   def from_string(string) do
-    :not_implemented
+    case string do
+      "L" -> {:ok, :L}
+      "R" -> {:ok, :R}
+      "M" -> {:ok, :M}
+      _   -> {:no_parse, string}
+    end
   end
 end
