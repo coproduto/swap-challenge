@@ -71,14 +71,15 @@ ExploringMars.Mission.Coordinate      </h1>
         <section id="moduledoc">
 <p>This module defines functions that create and operate on coordinates in the
 probe&#39;s space of movement.</p>
-<p>This module and the <code class="inline">Direction</code> module should change if the 
-coordinate representation used in the problem changes - for instance, 
-if we choose to use {y, x} coordinates instead of {x, y} or if we choose 
+<p>This module and the <code class="inline">Direction</code> module should change if the
+coordinate representation used in the problem changes - for instance,
+if we choose to use <code class="inline">{y, x}</code> coordinates instead of <code class="inline">{x, y}</code> or if we choose
 to model a probe moving in 3D space.</p>
-<p>This means this module is coupled to the <code class="inline">Direction</code> model, as it depends
-directly on the representation of the <code class="inline">Direction.t</code> type. This is acceptable
-for now, as the <code class="inline">Direction.t</code> type is quite simple, but it might need
-change. Check the note in the documentation of the <code class="inline">Direction</code> module for
+<p>This means this module is coupled to the <a href="ExploringMars.Mission.Direction.html"><code class="inline">ExploringMars.Mission.Direction</code></a> 
+module, as it depends directly on the representation of the 
+<a href="ExploringMars.Mission.Direction.html#t:t/0"><code class="inline">ExploringMars.Mission.Direction.t/0</code></a> type. This is acceptable for now, as 
+the Direction type is quite simple, but it might need change. Check the 
+note in the documentation of the <a href="ExploringMars.Mission.Direction.html"><code class="inline">ExploringMars.Mission.Direction</code></a> module for
 further details.</p>
         </section>
 
@@ -99,7 +100,7 @@ further details.</p>
     <a href="#t:t/0">t()</a>
   </div>
     <div class="summary-synopsis"><p>A coordinate is defined as a pair of integers specifying a position on the
-cartesian plane. The order of coordinates is {x, y}.</p></div>
+cartesian plane. The order of coordinates is <code class="inline">{x, y}</code>.</p></div>
 </div>
   </div>
   <div class="summary-functions summary">
@@ -149,7 +150,7 @@ Types          </h1>
   </div>
   <section class="docstring">
 <p>A coordinate is defined as a pair of integers specifying a position on the
-cartesian plane. The order of coordinates is {x, y}.</p>
+cartesian plane. The order of coordinates is <code class="inline">{x, y}</code>.</p>
   </section>
 </section>
           </div>
@@ -181,10 +182,11 @@ parse them as a coordinate.</p>
   Examples
 </h2>
 
-<p>   iex&gt; Coordinate.from_strings(&quot;100&quot;, &quot;200&quot;)
-   {:ok, {100, 200}}
-   iex&gt; Coordinate.from_strings(&quot;100x&quot;, &quot;200y&quot;)
-   {:no_parse, &quot;{100x, 200y}&quot;}</p>
+<pre><code class="nohighlight makeup elixir"><span class="gp unselectable">iex&gt; </span><span class="nc">Coordinate</span><span class="o">.</span><span class="n">from_strings</span><span class="p" data-group-id="9818288165-1">(</span><span class="s">&quot;100&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;200&quot;</span><span class="p" data-group-id="9818288165-1">)</span><span class="w">
+</span><span class="p" data-group-id="9818288165-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="9818288165-3">{</span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="mi">200</span><span class="p" data-group-id="9818288165-3">}</span><span class="p" data-group-id="9818288165-2">}</span><span class="w">
+
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Coordinate</span><span class="o">.</span><span class="n">from_strings</span><span class="p" data-group-id="9818288165-4">(</span><span class="s">&quot;100x&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;200y&quot;</span><span class="p" data-group-id="9818288165-4">)</span><span class="w">
+</span><span class="p" data-group-id="9818288165-5">{</span><span class="ss">:no_parse</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;{100x, 200y}&quot;</span><span class="p" data-group-id="9818288165-5">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="move/2">
@@ -205,10 +207,11 @@ parse them as a coordinate.</p>
   Examples
 </h2>
 
-<p>   iex&gt; Coordinate.move({-1, 0}, :E)
-   {0, 0}
-   iex&gt; Coordinate.move({0, 0}, &quot;Not a direction&quot;)
-   ** (ArgumentError) argument is not a direction</p>
+<pre><code class="nohighlight makeup elixir"><span class="gp unselectable">iex&gt; </span><span class="nc">Coordinate</span><span class="o">.</span><span class="n">move</span><span class="p" data-group-id="7727080129-1">(</span><span class="p" data-group-id="7727080129-2">{</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="7727080129-2">}</span><span class="p">,</span><span class="w"> </span><span class="ss">:E</span><span class="p" data-group-id="7727080129-1">)</span><span class="w">
+</span><span class="p" data-group-id="7727080129-3">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="7727080129-3">}</span><span class="w">
+
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Coordinate</span><span class="o">.</span><span class="n">move</span><span class="p" data-group-id="7727080129-4">(</span><span class="p" data-group-id="7727080129-5">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="7727080129-5">}</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Not a direction&quot;</span><span class="p" data-group-id="7727080129-4">)</span><span class="w">
+</span><span class="gt">** (ArgumentError) argument is not a direction</span></code></pre>
   </section>
 </section>
 <section class="detail" id="pretty_print/1">
@@ -224,6 +227,13 @@ parse them as a coordinate.</p>
   </div>
   <section class="docstring">
 <p>Converts a <code class="inline">coordinate</code> into a representation suitable for user-facing output.</p>
+<h2 id="pretty_print/1-examples" class="section-heading">
+  <a href="#pretty_print/1-examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Examples
+</h2>
+
+<pre><code class="nohighlight makeup elixir"><span class="gp unselectable">iex&gt; </span><span class="nc">Coordinate</span><span class="o">.</span><span class="n">pretty_print</span><span class="p" data-group-id="8589014355-1">(</span><span class="p" data-group-id="8589014355-2">{</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">2</span><span class="p" data-group-id="8589014355-2">}</span><span class="p" data-group-id="8589014355-1">)</span><span class="w">
+</span><span class="s">&quot;2 -2&quot;</span></code></pre>
   </section>
 </section>
           </div>

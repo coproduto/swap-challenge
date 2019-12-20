@@ -72,9 +72,9 @@ ExploringMars.Mission      </h1>
 <p>This module defines a mission. A mission encapsulates a single run of a probe,
 being defined by a single set of problem parameters (bounds, initial position,
 and instructions).</p>
-<p>Calling <code class="inline">Mission.run</code> with these parameters will produce the status in which 
-the probe ended (mission outcome -- see below), together with the final 
-position of the probe.</p>
+<p>Calling <a href="ExploringMars.Mission.html#run/3"><code class="inline">ExploringMars.Mission.run/3</code></a> with these parameters will produce the
+status in which the probe ended (mission outcome -- see below), together with
+the final position of the probe.</p>
 <p>This module should change if the way a mission is represented changes.</p>
         </section>
 
@@ -101,7 +101,7 @@ position of the probe.</p>
     <a href="#t:result/0">result()</a>
   </div>
     <div class="summary-synopsis"><p>A mission&#39;s result is its outcome together with its final position.
-See the <code class="inline">outcome</code> type&#39;s documentation above for further details.</p></div>
+See the <a href="#t:outcome/0"><code class="inline">outcome/0</code></a> type&#39;s documentation above for further details.</p></div>
 </div>
   </div>
   <div class="summary-functions summary">
@@ -121,7 +121,7 @@ output.</p></div>
   </div>
     <div class="summary-synopsis"><p>Run a mission by setting its parameters. Returns mission outcome and final
 position. Each outcome specifies how its final position should be interpreted.
-Check the <code class="inline">outcome</code> documentation above for further details.</p></div>
+Check the <a href="#t:outcome/0"><code class="inline">outcome/0</code></a> type&#39;s documentation above for further details.</p></div>
 </div>
   </div>
         </section>
@@ -148,12 +148,12 @@ Types          </h1>
   <section class="docstring">
 <p>A mission outcome represents the final status of a mission.</p>
 <ul>
-<li><p>:ok            -&gt; All commands were executed successfully</p>
+<li><p><code class="inline">:ok</code> → All commands were executed successfully</p>
 </li>
-<li><p>:out_of_bounds -&gt; The probe fell off the plateau. The position reported
+<li><p><code class="inline">:out_of_bounds</code> → The probe fell off the plateau. The position reported
 will be the position the probe was attempting to move to when it fell off.</p>
 </li>
-<li><p>:illegal_instruction -&gt; The probe tried to execute something that was not
+<li><p><code class="inline">:illegal_instruction</code> → The probe tried to execute something that was not
 a valid instruction. The position reported will be the position where the
 probe was when it executed the invalid instruction.</p>
 </li>
@@ -173,7 +173,7 @@ probe was when it executed the invalid instruction.</p>
   </div>
   <section class="docstring">
 <p>A mission&#39;s result is its outcome together with its final position.
-See the <code class="inline">outcome</code> type&#39;s documentation above for further details.</p>
+See the <a href="#t:outcome/0"><code class="inline">outcome/0</code></a> type&#39;s documentation above for further details.</p>
   </section>
 </section>
           </div>
@@ -200,6 +200,19 @@ Functions          </h1>
   <section class="docstring">
 <p>Converts the result of a mission into a string suitable for user-facing
 output.</p>
+<h2 id="result_to_string/1-examples" class="section-heading">
+  <a href="#result_to_string/1-examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Examples
+</h2>
+
+<pre><code class="nohighlight makeup elixir"><span class="gp unselectable">iex&gt; </span><span class="nc">Mission</span><span class="o">.</span><span class="n">result_to_string</span><span class="p" data-group-id="5496497735-1">(</span><span class="p" data-group-id="5496497735-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5496497735-3">{</span><span class="p" data-group-id="5496497735-4">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="5496497735-4">}</span><span class="p">,</span><span class="w"> </span><span class="ss">:N</span><span class="p" data-group-id="5496497735-3">}</span><span class="p" data-group-id="5496497735-2">}</span><span class="p" data-group-id="5496497735-1">)</span><span class="w">
+</span><span class="s">&quot;1 1 N</span><span class="se">\n</span><span class="s">&quot;</span><span class="w">
+
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Mission</span><span class="o">.</span><span class="n">result_to_string</span><span class="p" data-group-id="5496497735-5">(</span><span class="p" data-group-id="5496497735-6">{</span><span class="ss">:out_of_bounds</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5496497735-7">{</span><span class="p" data-group-id="5496497735-8">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="5496497735-8">}</span><span class="p">,</span><span class="w"> </span><span class="ss">:N</span><span class="p" data-group-id="5496497735-7">}</span><span class="p" data-group-id="5496497735-6">}</span><span class="p" data-group-id="5496497735-5">)</span><span class="w">
+</span><span class="s">&quot;OUT OF BOUNDS @ 1 1 N</span><span class="se">\n</span><span class="s">&quot;</span><span class="w">
+
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Mission</span><span class="o">.</span><span class="n">result_to_string</span><span class="p" data-group-id="5496497735-9">(</span><span class="p" data-group-id="5496497735-10">{</span><span class="ss">:invalid_instruction</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5496497735-11">{</span><span class="p" data-group-id="5496497735-12">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="5496497735-12">}</span><span class="p">,</span><span class="w"> </span><span class="ss">:N</span><span class="p" data-group-id="5496497735-11">}</span><span class="p" data-group-id="5496497735-10">}</span><span class="p" data-group-id="5496497735-9">)</span><span class="w">
+</span><span class="s">&quot;INVALID INSTRUCTION @ 1 1 N</span><span class="se">\n</span><span class="s">&quot;</span></code></pre>
   </section>
 </section>
 <section class="detail" id="run/3">
@@ -218,7 +231,20 @@ output.</p>
   <section class="docstring">
 <p>Run a mission by setting its parameters. Returns mission outcome and final
 position. Each outcome specifies how its final position should be interpreted.
-Check the <code class="inline">outcome</code> documentation above for further details.</p>
+Check the <a href="#t:outcome/0"><code class="inline">outcome/0</code></a> type&#39;s documentation above for further details.</p>
+<h2 id="run/3-examples" class="section-heading">
+  <a href="#run/3-examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Examples
+</h2>
+
+<pre><code class="nohighlight makeup elixir"><span class="gp unselectable">iex&gt; </span><span class="nc">Mission</span><span class="o">.</span><span class="n">run</span><span class="p" data-group-id="7281806449-1">(</span><span class="p" data-group-id="7281806449-2">{</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p" data-group-id="7281806449-2">}</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="7281806449-3">{</span><span class="p" data-group-id="7281806449-4">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="7281806449-4">}</span><span class="p">,</span><span class="w"> </span><span class="ss">:N</span><span class="p" data-group-id="7281806449-3">}</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="7281806449-5">[</span><span class="ss">:M</span><span class="p">,</span><span class="w"> </span><span class="ss">:R</span><span class="p">,</span><span class="w"> </span><span class="ss">:M</span><span class="p" data-group-id="7281806449-5">]</span><span class="p" data-group-id="7281806449-1">)</span><span class="w">
+</span><span class="p" data-group-id="7281806449-6">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="7281806449-7">{</span><span class="p" data-group-id="7281806449-8">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="7281806449-8">}</span><span class="p">,</span><span class="w"> </span><span class="ss">:E</span><span class="p" data-group-id="7281806449-7">}</span><span class="p" data-group-id="7281806449-6">}</span><span class="w">
+
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Mission</span><span class="o">.</span><span class="n">run</span><span class="p" data-group-id="7281806449-9">(</span><span class="p" data-group-id="7281806449-10">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="7281806449-10">}</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="7281806449-11">{</span><span class="p" data-group-id="7281806449-12">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="7281806449-12">}</span><span class="p">,</span><span class="w"> </span><span class="ss">:N</span><span class="p" data-group-id="7281806449-11">}</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="7281806449-13">[</span><span class="ss">:M</span><span class="p">,</span><span class="w"> </span><span class="ss">:R</span><span class="p">,</span><span class="w"> </span><span class="ss">:M</span><span class="p">,</span><span class="w"> </span><span class="ss">:M</span><span class="p" data-group-id="7281806449-13">]</span><span class="p" data-group-id="7281806449-9">)</span><span class="w">
+</span><span class="p" data-group-id="7281806449-14">{</span><span class="ss">:out_of_bounds</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="7281806449-15">{</span><span class="p" data-group-id="7281806449-16">{</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="7281806449-16">}</span><span class="p">,</span><span class="w"> </span><span class="ss">:E</span><span class="p" data-group-id="7281806449-15">}</span><span class="p" data-group-id="7281806449-14">}</span><span class="w">
+
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Mission</span><span class="o">.</span><span class="n">run</span><span class="p" data-group-id="7281806449-17">(</span><span class="p" data-group-id="7281806449-18">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="7281806449-18">}</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="7281806449-19">{</span><span class="p" data-group-id="7281806449-20">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="7281806449-20">}</span><span class="p">,</span><span class="w"> </span><span class="ss">:N</span><span class="p" data-group-id="7281806449-19">}</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="7281806449-21">[</span><span class="ss">:M</span><span class="p">,</span><span class="w"> </span><span class="ss">:R</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;%&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">:M</span><span class="p">,</span><span class="w"> </span><span class="ss">:M</span><span class="p" data-group-id="7281806449-21">]</span><span class="p" data-group-id="7281806449-17">)</span><span class="w">
+</span><span class="p" data-group-id="7281806449-22">{</span><span class="ss">:invalid_instruction</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="7281806449-23">{</span><span class="p" data-group-id="7281806449-24">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="7281806449-24">}</span><span class="p">,</span><span class="w"> </span><span class="ss">:E</span><span class="p" data-group-id="7281806449-23">}</span><span class="p" data-group-id="7281806449-22">}</span></code></pre>
   </section>
 </section>
           </div>

@@ -38,6 +38,7 @@ defmodule ExploringMars.Mission.Direction do
 
       iex> Direction.from_string("Not a direction")
       {:no_parse, "Not a direction"}
+
   """
   @spec from_string(String.t) :: {:ok, t} | {:no_parse, String.t}
   def from_string(string) do
@@ -55,10 +56,11 @@ defmodule ExploringMars.Mission.Direction do
 
   ## Examples
 
-     iex> Direction.turn_left(:N)
-     :W
-     iex> Direction.turn_left(:Not_a_direction)
-     ** (ArgumentError) argument is not a direction
+      iex> Direction.turn_left(:N)
+      :W
+
+      iex> Direction.turn_left(:Not_a_direction)
+      ** (ArgumentError) argument is not a direction
 
   """
   @spec turn_left(t) :: t
@@ -77,10 +79,11 @@ defmodule ExploringMars.Mission.Direction do
 
   ## Examples
 
-     iex> Direction.turn_right(:N)
-     :E
-     iex> Direction.turn_right(:Not_a_direction)
-     ** (ArgumentError) argument is not a direction
+      iex> Direction.turn_right(:N)
+      :E
+
+      iex> Direction.turn_right(:Not_a_direction)
+      ** (ArgumentError) argument is not a direction
   """
   @spec turn_right(t) :: t
   def turn_right(direction) do
@@ -95,6 +98,12 @@ defmodule ExploringMars.Mission.Direction do
 
   @doc """
   Converts a `Direction.t` into a representation suitable for user-facing output.
+
+  ## Examples
+
+      iex> Direction.pretty_print(:N)
+      "N"
+
   """
   @spec pretty_print(t) :: String.t
   def pretty_print(direction), do: Atom.to_string(direction)

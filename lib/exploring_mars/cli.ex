@@ -2,7 +2,7 @@ defmodule ExploringMars.CLI do
   @moduledoc """
   Top-level module for the CLI application, encapsulating the
   interpretation of command-line arguments. Delegates actual execution to the
-  `MissionRunner` module.
+  `ExploringMars.MissionRunner` module.
 
   Contains mainly functions dealing with finding and opening files.
   Should contain only impure functions.
@@ -31,6 +31,17 @@ defmodule ExploringMars.CLI do
 
   If called in interactive mode, the arguments should be passed as a list
   of strings.
+
+  When the program is compiled to a CLI application, pass the flags as
+  usual on the terminal.
+
+  ## Example:
+
+      main([
+        "-f", "examples/input.txt", 
+        "-o", "output.txt"
+      ]) # will read input from examples/input.txt and output to output.txt
+
   """
   def main(args \\ []) do
     {opts, _, _} = OptionParser.parse(args, parser_options())

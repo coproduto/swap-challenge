@@ -19,6 +19,21 @@ defmodule ExploringMars.Mission.Position do
   Takes three strings representing the `x_coordinate`, `y_coordinate`
   and `direction` of the probe and returns either :ok and the specified
   position or :no_parse and a description of what went wrong.
+
+  ## Examples
+
+      iex> Position.from_strings("1", "1", "N")
+      {:ok, {{1, 1}, :N}}
+
+      iex> Position.from_strings("1", "1", "K")
+      {:no_parse, "Invalid direction K"}
+
+      iex> Position.from_strings("x", "1", "N")
+      {:no_parse, "Invalid coordinates {x, 1}"}
+
+      iex> Position.from_strings("x", "1", "K")
+      {:no_parse, "Invalid coordinates {x, 1}, Invalid direction K"}
+      
   """
   @spec from_strings(
     String.t,
@@ -32,12 +47,14 @@ defmodule ExploringMars.Mission.Position do
       {{:ok, coords}, {:ok, dir}} -> {:ok, {coords, dir}}
       _ ->
         coord_error = get_error coordinate, fn data ->
-          "Invalid coordinates #{data}."
+          "Invalid coordinates #{data}"
         end
         direction_error = get_error direction, fn data ->
-          "Invalid direction #{data}."
+          "Invalid direction #{data}"
         end
-        error = [coord_error, direction_error] |> Enum.join("\n")
+        error = [coord_error, direction_error]
+        |> Enum.filter(fn s -> String.trim(s) != "" end)
+        |> Enum.join(", ")
         {:no_parse, error}
     end
   end
@@ -47,7 +64,7 @@ defmodule ExploringMars.Mission.Position do
   @spec get_error({atom, term}, (term -> String.t)) :: String.t
   defp get_error({err, data}, desc) do
     if err != :ok do
-      "ERROR: " <> desc.(data)
+      desc.(data)
     else
       ""
     end
@@ -56,6 +73,15 @@ defmodule ExploringMars.Mission.Position do
   @doc """
   Takes a `position` and returns the position obtained by moving forward
   from that position.
+
+  ## Examples
+      
+      iex> Position.move_forward({{0, 0}, :N})
+      {{0, 1}, :N}
+
+      iex> Position.move_forward({{0, 0}, :W})
+      {{-1, 0}, :W}
+
   """
   @spec move_forward(t) :: t
   def move_forward(position)
@@ -66,6 +92,12 @@ defmodule ExploringMars.Mission.Position do
   @doc """
   Takes a `position` and returns the position obtained by turning left
   from that position.
+
+  ## Examples
+
+      iex> Position.turn_left({{2, 2}, :N})
+      {{2, 2}, :W}
+
   """
   @spec turn_left(t) :: t
   def turn_left(position)
@@ -76,6 +108,12 @@ defmodule ExploringMars.Mission.Position do
   @doc """
   Takes a `position` and returns the position obtained by turning right
   from that position.
+
+  ## Examples
+
+      iex> Position.turn_right({{2, 2}, :N})
+      {{2, 2}, :E}
+
   """
   @spec turn_right(t) :: t
   def turn_right(position)
@@ -85,6 +123,11 @@ defmodule ExploringMars.Mission.Position do
 
   @doc """
   Converts a `position` into a representation suitable for user-facing output.
+
+  ## Examples
+
+      iex> Position.pretty_print({{2, 2}, :S})
+      "2 2 S"
   """
   @spec pretty_print(t) :: String.t
   def pretty_print(position)

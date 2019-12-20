@@ -71,7 +71,7 @@ ExploringMars.CLI      </h1>
         <section id="moduledoc">
 <p>Top-level module for the CLI application, encapsulating the
 interpretation of command-line arguments. Delegates actual execution to the
-<code class="inline">MissionRunner</code> module.</p>
+<a href="ExploringMars.MissionRunner.html"><code class="inline">ExploringMars.MissionRunner</code></a> module.</p>
 <p>Contains mainly functions dealing with finding and opening files.
 Should contain only impure functions.</p>
 <p>Most functions in this module should be private, as it should only
@@ -133,6 +133,17 @@ file. If not specified, the program will write to standard output.</p>
 </ul>
 <p>If called in interactive mode, the arguments should be passed as a list
 of strings.</p>
+<p>When the program is compiled to a CLI application, pass the flags as
+usual on the terminal.</p>
+<h2 id="main/1-example" class="section-heading">
+  <a href="#main/1-example" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Example:
+</h2>
+
+<pre><code class="nohighlight makeup elixir"><span class="n">main</span><span class="p" data-group-id="3970997654-1">(</span><span class="p" data-group-id="3970997654-2">[</span><span class="w">
+  </span><span class="s">&quot;-f&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;examples/input.txt&quot;</span><span class="p">,</span><span class="w"> 
+  </span><span class="s">&quot;-o&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;output.txt&quot;</span><span class="w">
+</span><span class="p" data-group-id="3970997654-2">]</span><span class="p" data-group-id="3970997654-1">)</span><span class="w"> </span><span class="c1"># will read input from examples/input.txt and output to output.txt</span></code></pre>
   </section>
 </section>
           </div>

@@ -161,6 +161,16 @@ Functions          </h1>
   </div>
   <section class="docstring">
 <p>Takes a <code class="inline">string</code> and tries to parse it as an instruction.</p>
+<h2 id="from_string/1-examples" class="section-heading">
+  <a href="#from_string/1-examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Examples
+</h2>
+
+<pre><code class="nohighlight makeup elixir"><span class="gp unselectable">iex&gt; </span><span class="nc">Instruction</span><span class="o">.</span><span class="n">from_string</span><span class="p" data-group-id="2487101989-1">(</span><span class="s">&quot;L&quot;</span><span class="p" data-group-id="2487101989-1">)</span><span class="w">
+</span><span class="ss">:L</span><span class="w">
+
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Instruction</span><span class="o">.</span><span class="n">from_string</span><span class="p" data-group-id="2487101989-2">(</span><span class="s">&quot;&quot;</span><span class="p" data-group-id="2487101989-2">)</span><span class="w">
+</span><span class="p" data-group-id="2487101989-3">{</span><span class="ss">:no_parse</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p" data-group-id="2487101989-3">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="run/2">
@@ -178,6 +188,19 @@ Functions          </h1>
   <section class="docstring">
 <p>Takes a probe position and an instruction and returns the next position of the
 probe.</p>
+<h2 id="run/2-examples" class="section-heading">
+  <a href="#run/2-examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Examples
+</h2>
+
+<pre><code class="nohighlight makeup elixir"><span class="gp unselectable">iex&gt; </span><span class="nc">Instruction</span><span class="o">.</span><span class="n">run</span><span class="p" data-group-id="3230121236-1">(</span><span class="p" data-group-id="3230121236-2">{</span><span class="p" data-group-id="3230121236-3">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="3230121236-3">}</span><span class="p">,</span><span class="w"> </span><span class="ss">:N</span><span class="p" data-group-id="3230121236-2">}</span><span class="p">,</span><span class="w"> </span><span class="ss">:M</span><span class="p" data-group-id="3230121236-1">)</span><span class="w">
+</span><span class="p" data-group-id="3230121236-4">{</span><span class="p" data-group-id="3230121236-5">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="3230121236-5">}</span><span class="p">,</span><span class="w"> </span><span class="ss">:N</span><span class="p" data-group-id="3230121236-4">}</span><span class="w">
+
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Instruction</span><span class="o">.</span><span class="n">run</span><span class="p" data-group-id="3230121236-6">(</span><span class="p" data-group-id="3230121236-7">{</span><span class="p" data-group-id="3230121236-8">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="3230121236-8">}</span><span class="p">,</span><span class="w"> </span><span class="ss">:N</span><span class="p" data-group-id="3230121236-7">}</span><span class="p">,</span><span class="w"> </span><span class="ss">:L</span><span class="p" data-group-id="3230121236-6">)</span><span class="w">
+</span><span class="p" data-group-id="3230121236-9">{</span><span class="p" data-group-id="3230121236-10">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="3230121236-10">}</span><span class="p">,</span><span class="w"> </span><span class="ss">:W</span><span class="p" data-group-id="3230121236-9">}</span><span class="w">
+
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Instruction</span><span class="o">.</span><span class="n">run</span><span class="p" data-group-id="3230121236-11">(</span><span class="p" data-group-id="3230121236-12">{</span><span class="p" data-group-id="3230121236-13">{</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="3230121236-13">}</span><span class="p">,</span><span class="w"> </span><span class="ss">:N</span><span class="p" data-group-id="3230121236-12">}</span><span class="p">,</span><span class="w"> </span><span class="ss">:K</span><span class="p" data-group-id="3230121236-11">)</span><span class="w">
+</span><span class="ss">:invalid_instruction</span></code></pre>
   </section>
 </section>
           </div>

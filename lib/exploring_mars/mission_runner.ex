@@ -1,7 +1,8 @@
 defmodule ExploringMars.MissionRunner do
   @moduledoc """
   File I/O handling module. Reads parameters from an `io_device` (which should
-  be either a file or `:stdio` and runs each mission using the `Mission` module.
+  be either a file or `:stdio` and runs each mission using the 
+  `ExploringMars.Mission` module.
 
   This module should change if the specification of how mission parameters are
   laid out changes.
@@ -16,7 +17,7 @@ defmodule ExploringMars.MissionRunner do
 
   Outputs for each mission either an error (if the mission was malformed) or
   a mission result. For more information on mission results, check the 
-  documentation for the `Mission` module.
+  documentation for the `ExploringMars.Mission` module.
   """
   @spec get_bounds_and_run(File.io_device, File.io_device) :: :ok
   def get_bounds_and_run(input, output) do
