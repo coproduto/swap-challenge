@@ -34,7 +34,7 @@ defmodule ExploringMars.Mission.Coordinate do
       {:ok, {100, 200}}
 
       iex> Coordinate.from_strings("100x", "200y")
-      {:no_parse, "{100x, 200y}"}
+      {:no_parse, "100x 200y"}
 
   """
   @spec from_strings(String.t, String.t) :: {:ok, t} | {:no_parse, String.t}
@@ -44,7 +44,7 @@ defmodule ExploringMars.Mission.Coordinate do
     case {x, y} do
       {{x_val, ""}, {y_val, ""}} -> # we require parsing to be exact -
         {:ok, {x_val, y_val}}       # no remaining characters!
-      _ -> {:no_parse, "{#{x_string}, #{y_string}}"}
+      _ -> {:no_parse, "#{x_string} #{y_string}"}
     end
   end
 

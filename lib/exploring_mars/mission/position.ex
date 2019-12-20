@@ -29,10 +29,10 @@ defmodule ExploringMars.Mission.Position do
       {:no_parse, "Invalid direction K"}
 
       iex> Position.from_strings("x", "1", "N")
-      {:no_parse, "Invalid coordinates {x, 1}"}
+      {:no_parse, "Invalid coordinates x 1"}
 
       iex> Position.from_strings("x", "1", "K")
-      {:no_parse, "Invalid coordinates {x, 1}, Invalid direction K"}
+      {:no_parse, "Invalid coordinates x 1, Invalid direction K"}
       
   """
   @spec from_strings(

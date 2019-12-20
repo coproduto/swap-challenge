@@ -26,7 +26,7 @@ defmodule ExploringMars.MissionRunner do
         run_missions_in_bounds(bounds, input, output)
         File.close(input)
         File.close(output)
-      err -> IO.puts("Invalid bounds: " <> inspect(err))
+      {_, msg} -> IO.puts("Invalid bounds: " <> msg)
     end
   end
 
@@ -41,17 +41,41 @@ defmodule ExploringMars.MissionRunner do
       :eof -> :ok
       {:ok, position} ->
         case read_instructions(input) do
-          :eof -> IO.puts("Unexpected end of file")
+          :eof -> IO.write(output, "Unexpected end of file")
           {:ok, instructions} ->
             result = Mission.run(bounds, position, instructions)
             IO.write(output, Mission.result_to_string(result))
             run_missions_in_bounds(bounds, input, output)
           err -> IO.write(output, "Unexpected error: " <> (inspect err))
         end
-      err -> IO.write(output, "Unexpected error: " <> (inspect err))
+      {:invalid_position, pos} ->
+        IO.write(output, "Invalid position: " <> strip_and_join(pos) <> "\n")
+        skip_line_and_keep_going(bounds, input, output)
+      err ->
+        IO.write(output, "Unexpected error: " <> (inspect err) <> "\n")
+        skip_line_and_keep_going(bounds, input, output)
     end
   end
 
+  @spec skip_line_and_keep_going(
+    Coordinate.t,
+    File.io_device,
+    File.io_device
+  ) :: :ok
+  defp skip_line_and_keep_going(bounds, input, output) do
+    if IO.read(input, :line) != :eof do
+      run_missions_in_bounds(bounds, input, output)
+    else
+      IO.write(output, "Unexpected end of file")
+      :ok
+    end
+  end
+
+  @spec strip_and_join(list(String.t)) :: String.t
+  defp strip_and_join(strings) do
+    Enum.map(strings, &String.trim/1) |> Enum.join(" ")
+  end
+        
   # read bounds from input file
   @spec read_bounds(File.io_device) :: {:ok, Coordinate.t} | term
   defp read_bounds(device) do
@@ -60,7 +84,8 @@ defmodule ExploringMars.MissionRunner do
     do
       Coordinate.from_strings(x, String.trim(y, "\n"))
     else
-      l when is_list(l) -> {:invalid_bounds, l}
+      l when is_list(l) ->
+        {:invalid_bounds, strip_and_join(l)}
       err -> err
     end
   end
@@ -86,7 +111,7 @@ defmodule ExploringMars.MissionRunner do
       {:error, err} -> {:error, err}
       line ->
         instructions = String.trim(line, "\n")
-        |> String.split(" ")
+        |> String.graphemes()
         |> Enum.map(&Instruction.from_string/1)
         {:ok, instructions}
     end
