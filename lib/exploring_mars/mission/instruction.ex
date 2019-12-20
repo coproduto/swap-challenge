@@ -1,10 +1,12 @@
-defmodule Instruction do
+defmodule ExploringMars.Mission.Instruction do
   @moduledoc """
   This module defines functions that operate on the probe's instructions.
 
   This module - and only this module - should change if new instructions are
   added, instructions are removed or if the meaning of instructions is changed.
   """
+
+  alias ExploringMars.Mission.Position
 
   @typedoc """
   A single instruction, one of :L, :R, :M, representing "Turn left",

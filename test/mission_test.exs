@@ -8,7 +8,8 @@ defmodule MissionTest do
   instructed to go over the plateau's edge, it will fall off and the position
   where it fell will be returned.
   """
-  
+
+  alias ExploringMars.Mission
   use ExUnit.Case
   doctest Mission
 

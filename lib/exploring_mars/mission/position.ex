@@ -1,4 +1,4 @@
-defmodule Position do
+defmodule ExploringMars.Mission.Position do
   @moduledoc """
   This module defines functions that operate on the probe's position.
 
@@ -6,6 +6,8 @@ defmodule Position do
   For instance, if we had 3D space instead of 2D, or further degrees of
   freedom. See the notes in the `Coordinate` and `Direction` modules.
   """
+
+  alias ExploringMars.Mission.{Coordinate, Direction}
 
   @typedoc """
   The probe's position, specified by an x-coordinate, y-coordinate 

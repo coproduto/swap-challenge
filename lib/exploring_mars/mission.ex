@@ -1,4 +1,4 @@
-defmodule Mission do
+defmodule ExploringMars.Mission do
   @moduledoc """
   This module defines the concept of a "mission". A mission is defined by a set
   of parameters to the problem - upper-right `bounds`, `initialPosition` of the
@@ -8,6 +8,8 @@ defmodule Mission do
 
   This module should change if the way a mission is represented changes.
   """
+
+  alias ExploringMars.Mission.{Position, Coordinate, Instruction}
 
   @typedoc """
   A mission outcome represents the final status of a mission.

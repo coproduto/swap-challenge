@@ -3,8 +3,10 @@ defmodule CoordinateTest do
   Unit tests for coordinate-handling functions.
   """
 
+  alias ExploringMars.Mission.Coordinate
+
   use ExUnit.Case
-  doctest Direction
+  doctest Coordinate
 
   test "Parse valid numbers returns coordinate" do
     assert Coordinate.from_strings("0", "0")  == {:ok, {0, 0}}

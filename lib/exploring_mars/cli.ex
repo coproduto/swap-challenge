@@ -1,4 +1,4 @@
-defmodule ExploringMars do
+defmodule ExploringMars.CLI do
   @moduledoc """
   Top-level module for the CLI application, encapsulating the
   interpretation of command-line arguments.
@@ -12,6 +12,8 @@ defmodule ExploringMars do
   This module should change if the command-line arguments to the CLI program
   change.
   """
+
+  alias ExploringMars.MissionRunner
 
   @doc """
   The main command-line program entry point.

@@ -3,6 +3,7 @@ defmodule InstructionTest do
   Unit tests for instruction creation.
   """
 
+  alias ExploringMars.Mission.Instruction
   use ExUnit.Case
   doctest Instruction
 

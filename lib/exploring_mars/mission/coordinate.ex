@@ -1,4 +1,4 @@
-defmodule Coordinate do
+defmodule ExploringMars.Mission.Coordinate do
   @moduledoc """
   This module defines functions that create and operate on coordinates.
 
@@ -13,6 +13,8 @@ defmodule Coordinate do
   change. Check the note in the documentation of the `Direction` module for
   further details.
   """
+
+  alias ExploringMars.Mission.Direction
 
   @typedoc """
   A coordinate is defined as a pair of integers specifying a position on the

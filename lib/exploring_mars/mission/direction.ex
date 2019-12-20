@@ -1,4 +1,4 @@
-defmodule Direction do
+defmodule ExploringMars.Mission.Direction do
   @moduledoc """
   This module defines functions that create and operate on directions.
 
@@ -95,6 +95,6 @@ defmodule Direction do
   @doc """
   Converts a `Direction.t` into a representation suitable for user-facing output.
   """
-  @spec pretty_print(Position.t) :: String.t
+  @spec pretty_print(t) :: String.t
   def pretty_print(direction), do: Atom.to_string(direction)
 end

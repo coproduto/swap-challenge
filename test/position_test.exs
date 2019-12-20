@@ -3,6 +3,7 @@ defmodule PositionTest do
   Unit tests for functions that operate on the probe's position.
   """
 
+  alias ExploringMars.Mission.Position
   use ExUnit.Case
   doctest Position
 

@@ -20,7 +20,7 @@ defmodule ExplorandoMarte.MixProject do
   end
 
   def escript do
-    [ main_module: ExploringMars ]
+    [ main_module: ExploringMars.CLI ]
   end
 
   # Run "mix help deps" to learn about dependencies.

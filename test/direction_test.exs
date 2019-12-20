@@ -3,6 +3,7 @@ defmodule DirectionTest do
   Unit tests for direction-handling functions.
   """
 
+  alias ExploringMars.Mission.Direction
   use ExUnit.Case
   doctest Direction
 

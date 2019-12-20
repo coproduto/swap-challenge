@@ -1,4 +1,4 @@
-defmodule MissionRunner do
+defmodule ExploringMars.MissionRunner do
   @moduledoc """
   File I/O handling module. Reads parameters from an `io_device` (which should
   be either a file or `:stdio` and runs each mission using the `Mission` module.
@@ -6,6 +6,9 @@ defmodule MissionRunner do
   This module should change if the specification of how mission parameters are
   laid out changes.
   """
+
+  alias ExploringMars.Mission
+  alias ExploringMars.Mission.{Coordinate, Position, Instruction}
   
   @doc """
   Takes an input file, an output file, and tries to read the input file as a
