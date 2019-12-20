@@ -1,6 +1,7 @@
 defmodule ExploringMars.Mission.Coordinate do
   @moduledoc """
-  This module defines functions that create and operate on coordinates.
+  This module defines functions that create and operate on coordinates in the
+  probe's space of movement.
 
   This module and the `Direction` module should change if the 
   coordinate representation used in the problem changes - for instance, 

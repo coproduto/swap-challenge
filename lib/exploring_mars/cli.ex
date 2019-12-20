@@ -1,7 +1,8 @@
 defmodule ExploringMars.CLI do
   @moduledoc """
   Top-level module for the CLI application, encapsulating the
-  interpretation of command-line arguments.
+  interpretation of command-line arguments. Delegates actual execution to the
+  `MissionRunner` module.
 
   Contains mainly functions dealing with finding and opening files.
   Should contain only impure functions.

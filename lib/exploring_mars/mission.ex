@@ -1,10 +1,12 @@
 defmodule ExploringMars.Mission do
   @moduledoc """
-  This module defines the concept of a "mission". A mission is defined by a set
-  of parameters to the problem - upper-right `bounds`, `initialPosition` of the
-  probe and probe `instructions`. Calling `Mission.run` with these parameters
-  will produce the status in which the probe ended (mission outcome -- see
-  below), together with the final position of the probe.
+  This module defines a mission. A mission encapsulates a single run of a probe,
+  being defined by a single set of problem parameters (bounds, initial position,
+  and instructions).
+
+  Calling `Mission.run` with these parameters will produce the status in which 
+  the probe ended (mission outcome -- see below), together with the final 
+  position of the probe.
 
   This module should change if the way a mission is represented changes.
   """

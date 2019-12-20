@@ -1,6 +1,7 @@
 defmodule ExploringMars.Mission.Direction do
   @moduledoc """
-  This module defines functions that create and operate on directions.
+  This module defines functions that create and operate on directions in the
+  probe's coordinate space.
 
   This module should change if the coordinate representation used in the
   problem changes in degrees of freedom - for instance, if we decide the probe
