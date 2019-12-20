@@ -89,6 +89,7 @@ defmodule ExploringMars.Mission do
   # Checks if a coordinate is in-bounds.
   @spec in_bounds(Coordinate.t, Coordinate.t) :: as_boolean(atom)
   defp in_bounds({x_max, y_max}, {x, y}) do
+    # IO.puts("#{x} <= #{x_max}, #{y} <= #{y_max}")
     x >= 0 && y >= 0 && x <= x_max && y <= y_max
   end
 

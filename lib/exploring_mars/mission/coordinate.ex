@@ -39,11 +39,26 @@ defmodule ExploringMars.Mission.Coordinate do
   """
   @spec from_strings(String.t, String.t) :: {:ok, t} | {:no_parse, String.t}
   def from_strings(x_string, y_string) do
-    x = safe_parse_integer(x_string)
-    y = safe_parse_integer(y_string)
-    case {x, y} do
-      {{x_val, ""}, {y_val, ""}} -> # we require parsing to be exact -
-        {:ok, {x_val, y_val}}       # no remaining characters!
+    # we require parsing to be exact - no remaining characters!
+    with {x_val, ""} <- safe_parse_integer(x_string),
+         {y_val, ""} <- safe_parse_integer(y_string)
+    do
+      {:ok, {x_val, y_val}}
+    else
+      _ -> {:no_parse, "#{x_string} #{y_string}"}
+    end
+  end
+
+  @doc """
+  Does the same as `from_strings`, but fails if any of the coordinate's 
+  components would be negative.
+  """
+  def positive_from_strings(x_string, y_string) do
+    with {x_val, ""} when x_val >= 0 <- safe_parse_integer(x_string),
+         {y_val, ""} when y_val >= 0 <- safe_parse_integer(y_string)
+    do
+      {:ok, {x_val, y_val}}
+    else
       _ -> {:no_parse, "#{x_string} #{y_string}"}
     end
   end

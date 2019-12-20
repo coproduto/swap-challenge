@@ -26,13 +26,13 @@ defmodule ExploringMars.Mission.Position do
       {:ok, {{1, 1}, :N}}
 
       iex> Position.from_strings("1", "1", "K")
-      {:no_parse, "Invalid direction K"}
+      {:no_parse, "Invalid direction: K"}
 
       iex> Position.from_strings("x", "1", "N")
-      {:no_parse, "Invalid coordinates x 1"}
+      {:no_parse, "Invalid coordinates: x 1"}
 
       iex> Position.from_strings("x", "1", "K")
-      {:no_parse, "Invalid coordinates x 1, Invalid direction K"}
+      {:no_parse, "Invalid coordinates: x 1, Invalid direction: K"}
       
   """
   @spec from_strings(
@@ -47,10 +47,10 @@ defmodule ExploringMars.Mission.Position do
       {{:ok, coords}, {:ok, dir}} -> {:ok, {coords, dir}}
       _ ->
         coord_error = get_error coordinate, fn data ->
-          "Invalid coordinates #{data}"
+          "Invalid coordinates: #{data}"
         end
         direction_error = get_error direction, fn data ->
-          "Invalid direction #{data}"
+          "Invalid direction: #{data}"
         end
         error = [coord_error, direction_error]
         |> Enum.filter(fn s -> String.trim(s) != "" end)

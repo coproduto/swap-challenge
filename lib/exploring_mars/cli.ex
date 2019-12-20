@@ -53,7 +53,9 @@ defmodule ExploringMars.CLI do
     do
       MissionRunner.get_bounds_and_run(input_device, output_device)
     else
+      {:error, :enoent} -> IO.puts("Error: Input file does not exist.")
       {:error, err} -> IO.puts("Error opening device: " <> inspect err)
+      err -> IO.puts("Unknown error opening device: " <> inspect err)
     end
   end
 

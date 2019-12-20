@@ -26,11 +26,13 @@ defmodule ExploringMars.MissionRunner do
         run_missions_in_bounds(bounds, input, output)
         File.close(input)
         File.close(output)
-      {_, msg} -> IO.puts("Invalid bounds: " <> msg)
+      {_, msg} -> IO.write(output, "Invalid bounds: " <> msg <> "\n")
     end
   end
 
-  # run 0 to N missions, given bounds
+  # run 0 to N missions, given bounds.
+  # does most of the input and error handling. Should probably be split
+  # into smaller functions.
   @spec run_missions_in_bounds(
     Coordinate.t,
     File.io_device,
@@ -39,6 +41,9 @@ defmodule ExploringMars.MissionRunner do
   defp run_missions_in_bounds(bounds, input, output) do
     case read_position(input) do
       :eof -> :ok
+      {:no_parse, err} ->
+        IO.write(output, err <> "\n")
+        skip_line_and_keep_going(bounds, input, output)      
       {:ok, position} ->
         case read_instructions(input) do
           :eof -> IO.write(output, "Unexpected end of file")
@@ -46,13 +51,13 @@ defmodule ExploringMars.MissionRunner do
             result = Mission.run(bounds, position, instructions)
             IO.write(output, Mission.result_to_string(result))
             run_missions_in_bounds(bounds, input, output)
-          err -> IO.write(output, "Unexpected error: " <> (inspect err))
+          err -> IO.write(output, "Unexpected error: " <> inspect err)
         end
       {:invalid_position, pos} ->
         IO.write(output, "Invalid position: " <> strip_and_join(pos) <> "\n")
         skip_line_and_keep_going(bounds, input, output)
       err ->
-        IO.write(output, "Unexpected error: " <> (inspect err) <> "\n")
+        IO.write(output, "Unexpected error: " <> inspect err <> "\n")
         skip_line_and_keep_going(bounds, input, output)
     end
   end
@@ -82,7 +87,7 @@ defmodule ExploringMars.MissionRunner do
     with line when line != :eof <- IO.read(device, :line),
          [x, y] <- String.split(line, " ")
     do
-      Coordinate.from_strings(x, String.trim(y, "\n"))
+      Coordinate.positive_from_strings(x, String.trim(y, "\n"))
     else
       l when is_list(l) ->
         {:invalid_bounds, strip_and_join(l)}
@@ -112,6 +117,7 @@ defmodule ExploringMars.MissionRunner do
       line ->
         instructions = String.trim(line, "\n")
         |> String.graphemes()
+        |> Enum.filter(fn c -> c != " " end)
         |> Enum.map(&Instruction.from_string/1)
         {:ok, instructions}
     end
