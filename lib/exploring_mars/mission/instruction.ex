@@ -26,13 +26,13 @@ defmodule ExploringMars.Mission.Instruction do
       {:no_parse, ""}
 
   """
-  @spec from_string(String.t) :: t | {:no_parse, String.t}
+  @spec from_string(String.t()) :: t | {:no_parse, String.t()}
   def from_string(string) do
     case string do
       "L" -> :L
       "R" -> :R
       "M" -> :M
-      _   -> {:no_parse, string}
+      _ -> {:no_parse, string}
     end
   end
 
@@ -52,13 +52,13 @@ defmodule ExploringMars.Mission.Instruction do
       :invalid_instruction
 
   """
-  @spec run(Position.t, t) :: Position.t | :invalid_instruction
+  @spec run(Position.t(), t) :: Position.t() | :invalid_instruction
   def run(position, instruction) do
     case instruction do
       :L -> Position.turn_left(position)
       :R -> Position.turn_right(position)
       :M -> Position.move_forward(position)
-      _  -> :invalid_instruction
+      _ -> :invalid_instruction
     end
   end
 end

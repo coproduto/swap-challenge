@@ -37,12 +37,11 @@ defmodule ExploringMars.Mission.Coordinate do
       {:no_parse, "100x 200y"}
 
   """
-  @spec from_strings(String.t, String.t) :: {:ok, t} | {:no_parse, String.t}
+  @spec from_strings(String.t(), String.t()) :: {:ok, t} | {:no_parse, String.t()}
   def from_strings(x_string, y_string) do
     # we require parsing to be exact - no remaining characters!
     with {x_val, ""} <- safe_parse_integer(x_string),
-         {y_val, ""} <- safe_parse_integer(y_string)
-    do
+         {y_val, ""} <- safe_parse_integer(y_string) do
       {:ok, {x_val, y_val}}
     else
       _ -> {:no_parse, "#{x_string} #{y_string}"}
@@ -54,13 +53,12 @@ defmodule ExploringMars.Mission.Coordinate do
   components would be negative.
   """
   @spec positive_from_strings(
-    String.t,
-    String.t
-  ) :: {:ok, t} | {:no_parse, String.t}
+          String.t(),
+          String.t()
+        ) :: {:ok, t} | {:no_parse, String.t()}
   def positive_from_strings(x_string, y_string) do
     with {x_val, ""} when x_val >= 0 <- safe_parse_integer(x_string),
-         {y_val, ""} when y_val >= 0 <- safe_parse_integer(y_string)
-    do
+         {y_val, ""} when y_val >= 0 <- safe_parse_integer(y_string) do
       {:ok, {x_val, y_val}}
     else
       _ -> {:no_parse, "#{x_string} #{y_string}"}
@@ -89,14 +87,15 @@ defmodule ExploringMars.Mission.Coordinate do
       ** (ArgumentError) argument is not a direction
 
   """
-  @spec move(t, Direction.t) :: t
+  @spec move(t, Direction.t()) :: t
   def move(coordinate, direction)
+
   def move({x, y}, direction) do
     case direction do
-      :N -> {x,   y+1}
-      :E -> {x+1, y  }
-      :W -> {x-1, y  }
-      :S -> {x,   y-1}
+      :N -> {x, y + 1}
+      :E -> {x + 1, y}
+      :W -> {x - 1, y}
+      :S -> {x, y - 1}
       _ -> raise ArgumentError, message: "argument is not a direction"
     end
   end
@@ -110,8 +109,9 @@ defmodule ExploringMars.Mission.Coordinate do
       "2 -2"
 
   """
-  @spec pretty_print(t) :: String.t
+  @spec pretty_print(t) :: String.t()
   def pretty_print(coordinate)
+
   def pretty_print({x, y}) do
     "#{x} #{y}"
   end

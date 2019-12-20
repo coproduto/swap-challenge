@@ -16,8 +16,8 @@ defmodule PositionTest do
     # We do not specify the error messages here. The Position module should
     # emit user-facing error messages which should be able to change for many
     # reasons.
-    assert Position.from_strings("A", "B", "C")  |> elem(0) == :no_parse
-    assert Position.from_strings("0", "0", "Z")  |> elem(0) == :no_parse
+    assert Position.from_strings("A", "B", "C") |> elem(0) == :no_parse
+    assert Position.from_strings("0", "0", "Z") |> elem(0) == :no_parse
     assert Position.from_strings("0Y", "0", "S") |> elem(0) == :no_parse
     assert Position.from_strings("0", "0X", "E") |> elem(0) == :no_parse
     assert Position.from_strings(:"0", :"0", :N) |> elem(0) == :no_parse

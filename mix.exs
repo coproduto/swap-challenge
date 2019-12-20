@@ -8,7 +8,7 @@ defmodule ExplorandoMarte.MixProject do
       elixir: "~> 1.9",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      escript: escript(),
+      escript: escript()
     ]
   end
 
@@ -20,14 +20,14 @@ defmodule ExplorandoMarte.MixProject do
   end
 
   def escript do
-    [ main_module: ExploringMars.CLI ]
+    [main_module: ExploringMars.CLI]
   end
 
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
       {:dialyxir, "~> 1.0.0-rc.7", only: [:dev], runtime: false},
-      {:ex_doc, "~> 0.21", only: :dev, runtime: false},
+      {:ex_doc, "~> 0.21", only: :dev, runtime: false}
     ]
   end
 end

@@ -48,31 +48,30 @@ defmodule ExploringMars.CLI do
 
     input = Keyword.get(opts, :file)
     output = Keyword.get(opts, :output)
+
     with {:ok, input_device} <- open_file_or_stdio(input, :read),
-         {:ok, output_device} <- open_file_or_stdio(output, :write)
-    do
+         {:ok, output_device} <- open_file_or_stdio(output, :write) do
       MissionRunner.get_bounds_and_run(input_device, output_device)
     else
       {:error, :enoent} -> IO.puts("Error: Input file does not exist.")
-      {:error, err} -> IO.puts("Error opening device: " <> inspect err)
-      err -> IO.puts("Unknown error opening device: " <> inspect err)
+      {:error, err} -> IO.puts("Error opening device: " <> inspect(err))
+      err -> IO.puts("Unknown error opening device: " <> inspect(err))
     end
   end
 
   # definition of command-line parameters
-  @spec parser_options :: Keyword.t
+  @spec parser_options :: Keyword.t()
   defp parser_options do
-    [ strict: [ file: :string, output: :string ],
-      aliases: [ f: :file, o: :output ]
-    ]
+    [strict: [file: :string, output: :string], aliases: [f: :file, o: :output]]
   end
 
   # if input or output files are not specified, use :stdio.
   @spec open_file_or_stdio(
-    nil | Path.t,
-    File.mode
-  ) :: {:ok, File.io_device} | {:error, File.posix}
+          nil | Path.t(),
+          File.mode()
+        ) :: {:ok, File.io_device()} | {:error, File.posix()}
   defp open_file_or_stdio(nil, _), do: {:ok, :stdio}
+
   defp open_file_or_stdio(path, mode) do
     File.open(path, [mode, :utf8])
   end

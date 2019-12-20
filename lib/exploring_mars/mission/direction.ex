@@ -40,14 +40,14 @@ defmodule ExploringMars.Mission.Direction do
       {:no_parse, "Not a direction"}
 
   """
-  @spec from_string(String.t) :: {:ok, t} | {:no_parse, String.t}
+  @spec from_string(String.t()) :: {:ok, t} | {:no_parse, String.t()}
   def from_string(string) do
     case string do
       "N" -> {:ok, :N}
       "E" -> {:ok, :E}
       "W" -> {:ok, :W}
       "S" -> {:ok, :S}
-      _   -> {:no_parse, string}
+      _ -> {:no_parse, string}
     end
   end
 
@@ -70,7 +70,7 @@ defmodule ExploringMars.Mission.Direction do
       :E -> :N
       :W -> :S
       :S -> :E
-      _  -> raise ArgumentError, message: "argument is not a direction"
+      _ -> raise ArgumentError, message: "argument is not a direction"
     end
   end
 
@@ -92,7 +92,7 @@ defmodule ExploringMars.Mission.Direction do
       :E -> :S
       :W -> :N
       :S -> :W
-      _  -> raise ArgumentError, message: "argument is not a direction"
+      _ -> raise ArgumentError, message: "argument is not a direction"
     end
   end
 
@@ -105,6 +105,6 @@ defmodule ExploringMars.Mission.Direction do
       "N"
 
   """
-  @spec pretty_print(t) :: String.t
+  @spec pretty_print(t) :: String.t()
   def pretty_print(direction), do: Atom.to_string(direction)
 end

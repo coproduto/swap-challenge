@@ -32,7 +32,7 @@ defmodule ExploringMars.Mission do
   A mission's result is its outcome together with its final position.
   See the `t:outcome/0` type's documentation above for further details.
   """
-  @type result :: {outcome, Position.t}
+  @type result :: {outcome, Position.t()}
 
   @doc """
   Run a mission by setting its parameters. Returns mission outcome and final
@@ -52,12 +52,13 @@ defmodule ExploringMars.Mission do
 
   """
   @spec run(
-    Coordinate.t,
-    Position.t,
-    list(Instruction.t)
-  ) :: result
+          Coordinate.t(),
+          Position.t(),
+          list(Instruction.t())
+        ) :: result
   def run(bounds, position, instructions) do
     coordinate = position |> elem(0)
+
     if in_bounds(bounds, coordinate) do
       do_run(bounds, position, instructions)
     else
@@ -70,24 +71,28 @@ defmodule ExploringMars.Mission do
   # to bounds check after running each instructions, instead of bounds
   # checking before *and* after running each instruction.
   @spec do_run(
-    Coordinate.t,
-    Position.t,
-    list(Instruction.t)
-  ) :: result
+          Coordinate.t(),
+          Position.t(),
+          list(Instruction.t())
+        ) :: result
   defp do_run(_bounds, position, []), do: {:ok, position}
+
   defp do_run(bounds, position, [instruction | rest]) do
     case Instruction.run(position, instruction) do
-      :invalid_instruction -> {:invalid_instruction, position}
-      {coord, direction} -> if in_bounds(bounds, coord) do
-        do_run(bounds, {coord, direction}, rest)
-      else
-        {:out_of_bounds, {coord, direction}}
-      end
+      :invalid_instruction ->
+        {:invalid_instruction, position}
+
+      {coord, direction} ->
+        if in_bounds(bounds, coord) do
+          do_run(bounds, {coord, direction}, rest)
+        else
+          {:out_of_bounds, {coord, direction}}
+        end
     end
   end
 
   # Checks if a coordinate is in-bounds.
-  @spec in_bounds(Coordinate.t, Coordinate.t) :: as_boolean(atom)
+  @spec in_bounds(Coordinate.t(), Coordinate.t()) :: as_boolean(atom)
   defp in_bounds({x_max, y_max}, {x, y}) do
     # IO.puts("#{x} <= #{x_max}, #{y} <= #{y_max}")
     x >= 0 && y >= 0 && x <= x_max && y <= y_max
@@ -108,16 +113,22 @@ defmodule ExploringMars.Mission do
       iex> Mission.result_to_string({:invalid_instruction, {{1, 1}, :N}})
       "INVALID INSTRUCTION @ 1 1 N\\n"
   """
-  @spec result_to_string(result) :: String.t
+  @spec result_to_string(result) :: String.t()
   def result_to_string(mission_result)
+
   def result_to_string({outcome, position}) do
-    output = case outcome do
-               :ok -> Position.pretty_print(position)
-               :out_of_bounds ->
-                 "OUT OF BOUNDS @ #{Position.pretty_print(position)}"
-               :invalid_instruction ->
-                 "INVALID INSTRUCTION @ #{Position.pretty_print(position)}"
-             end
+    output =
+      case outcome do
+        :ok ->
+          Position.pretty_print(position)
+
+        :out_of_bounds ->
+          "OUT OF BOUNDS @ #{Position.pretty_print(position)}"
+
+        :invalid_instruction ->
+          "INVALID INSTRUCTION @ #{Position.pretty_print(position)}"
+      end
+
     output <> "\n"
   end
 end

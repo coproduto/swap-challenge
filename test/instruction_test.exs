@@ -15,7 +15,7 @@ defmodule InstructionTest do
 
   test "Parse invalid string returns error" do
     assert Instruction.from_string("N") == {:no_parse, "N"}
-    assert Instruction.from_string("T")  == {:no_parse, "T"}
+    assert Instruction.from_string("T") == {:no_parse, "T"}
     assert Instruction.from_string("01") == {:no_parse, "01"}
     assert Instruction.from_string(nil) == {:no_parse, nil}
   end

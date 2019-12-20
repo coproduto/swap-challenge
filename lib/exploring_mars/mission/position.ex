@@ -13,7 +13,7 @@ defmodule ExploringMars.Mission.Position do
   The probe's position, specified by an x-coordinate, y-coordinate 
   and direction. Use as `Position.t`.
   """
-  @type t :: {Coordinate.t, Direction.t}
+  @type t :: {Coordinate.t(), Direction.t()}
 
   @doc """
   Takes three strings representing the `x_coordinate`, `y_coordinate`
@@ -36,32 +36,41 @@ defmodule ExploringMars.Mission.Position do
       
   """
   @spec from_strings(
-    String.t,
-    String.t,
-    String.t
-  ) :: {:ok, t} | {:no_parse, String.t}
+          String.t(),
+          String.t(),
+          String.t()
+        ) :: {:ok, t} | {:no_parse, String.t()}
   def from_strings(x_string, y_string, direction_string) do
     coordinate = Coordinate.from_strings(x_string, y_string)
     direction = Direction.from_string(direction_string)
+
     case {coordinate, direction} do
-      {{:ok, coords}, {:ok, dir}} -> {:ok, {coords, dir}}
+      {{:ok, coords}, {:ok, dir}} ->
+        {:ok, {coords, dir}}
+
       _ ->
-        coord_error = get_error coordinate, fn data ->
-          "Invalid coordinates: #{data}"
-        end
-        direction_error = get_error direction, fn data ->
-          "Invalid direction: #{data}"
-        end
-        error = [coord_error, direction_error]
-        |> Enum.filter(fn s -> String.trim(s) != "" end)
-        |> Enum.join(", ")
+        coord_error =
+          get_error(coordinate, fn data ->
+            "Invalid coordinates: #{data}"
+          end)
+
+        direction_error =
+          get_error(direction, fn data ->
+            "Invalid direction: #{data}"
+          end)
+
+        error =
+          [coord_error, direction_error]
+          |> Enum.filter(fn s -> String.trim(s) != "" end)
+          |> Enum.join(", ")
+
         {:no_parse, error}
     end
   end
 
   # Takes a potential error tuple and converts it into a description
   # if it is indeed an error
-  @spec get_error({atom, term}, (term -> String.t)) :: String.t
+  @spec get_error({atom, term}, (term -> String.t())) :: String.t()
   defp get_error({err, data}, desc) do
     if err != :ok do
       desc.(data)
@@ -85,6 +94,7 @@ defmodule ExploringMars.Mission.Position do
   """
   @spec move_forward(t) :: t
   def move_forward(position)
+
   def move_forward({coordinate, direction}) do
     {Coordinate.move(coordinate, direction), direction}
   end
@@ -101,6 +111,7 @@ defmodule ExploringMars.Mission.Position do
   """
   @spec turn_left(t) :: t
   def turn_left(position)
+
   def turn_left({coordinate, direction}) do
     {coordinate, Direction.turn_left(direction)}
   end
@@ -117,6 +128,7 @@ defmodule ExploringMars.Mission.Position do
   """
   @spec turn_right(t) :: t
   def turn_right(position)
+
   def turn_right({coordinate, direction}) do
     {coordinate, Direction.turn_right(direction)}
   end
@@ -129,8 +141,9 @@ defmodule ExploringMars.Mission.Position do
       iex> Position.pretty_print({{2, 2}, :S})
       "2 2 S"
   """
-  @spec pretty_print(t) :: String.t
+  @spec pretty_print(t) :: String.t()
   def pretty_print(position)
+
   def pretty_print({coord, dir}) do
     "#{Coordinate.pretty_print(coord)} #{Direction.pretty_print(dir)}"
   end
