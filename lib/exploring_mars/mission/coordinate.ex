@@ -53,6 +53,10 @@ defmodule ExploringMars.Mission.Coordinate do
   Does the same as `from_strings`, but fails if any of the coordinate's 
   components would be negative.
   """
+  @spec positive_from_strings(
+    String.t,
+    String.t
+  ) :: {:ok, t} | {:no_parse, String.t}
   def positive_from_strings(x_string, y_string) do
     with {x_val, ""} when x_val >= 0 <- safe_parse_integer(x_string),
          {y_val, ""} when y_val >= 0 <- safe_parse_integer(y_string)

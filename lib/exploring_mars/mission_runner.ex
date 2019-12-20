@@ -57,7 +57,7 @@ defmodule ExploringMars.MissionRunner do
         IO.write(output, "Invalid position: " <> strip_and_join(pos) <> "\n")
         skip_line_and_keep_going(bounds, input, output)
       err ->
-        IO.write(output, "Unexpected error: " <> inspect err <> "\n")
+        IO.write(output, "Unexpected error: " <> (inspect err) <> "\n")
         skip_line_and_keep_going(bounds, input, output)
     end
   end
@@ -80,9 +80,13 @@ defmodule ExploringMars.MissionRunner do
   defp strip_and_join(strings) do
     Enum.map(strings, &String.trim/1) |> Enum.join(" ")
   end
+
+  @typep bounds_error :: {:invalid_bounds, String.t}
+                       | {:no_parse, String.t}
+                       | IO.nodata
         
   # read bounds from input file
-  @spec read_bounds(File.io_device) :: {:ok, Coordinate.t} | term
+  @spec read_bounds(File.io_device) :: {:ok, Coordinate.t} | bounds_error
   defp read_bounds(device) do
     with line when line != :eof <- IO.read(device, :line),
          [x, y] <- String.split(line, " ")
@@ -95,8 +99,12 @@ defmodule ExploringMars.MissionRunner do
     end
   end
 
+  @typep position_error :: {:invalid_position, list(String.t)}
+                         | {:no_parse, String.t}
+                         | IO.nodata
+
   # read position from input file
-  @spec read_position(File.io_device) :: {:ok, Position.t} | term
+  @spec read_position(File.io_device) :: {:ok, Position.t} | position_error
   defp read_position(device) do
     with line when line != :eof <- IO.read(device, :line),
          [sx, sy, dir] <- String.split(line, " ")
@@ -109,17 +117,17 @@ defmodule ExploringMars.MissionRunner do
   end
 
   # read instructions from input file as list
-  @spec read_instructions(File.io_device) :: {:ok, list(Instruction.t)} | term
+  @spec read_instructions(File.io_device) :: {:ok, list(Instruction.t)}
+                                           | IO.nodata
   defp read_instructions(device) do
     case IO.read(device, :line) do
-      :eof -> :eof
-      {:error, err} -> {:error, err}
-      line ->
+      line when is_binary(line) ->
         instructions = String.trim(line, "\n")
         |> String.graphemes()
         |> Enum.filter(fn c -> c != " " end)
         |> Enum.map(&Instruction.from_string/1)
         {:ok, instructions}
+      err -> err
     end
   end
 end
