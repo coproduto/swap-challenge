@@ -1,16 +1,20 @@
 defmodule ExploringMars do
   @moduledoc """
-  Top-level module, encapsulating the entire solution.
+  Top-level module for the CLI application, encapsulating the
+  interpretation of command-line arguments.
 
-  Contains mainly functions dealing with file and command-line IO.
-  Should be the only module in the project to contain impure functions.
+  Contains mainly functions dealing with finding and opening files.
+  Should contain only impure functions.
 
   Most functions in this module should be private, as it should only
-  expose the full command-line interface.
+  expose the full command-line interface as `main`.
+
+  This module should change if the command-line arguments to the CLI program
+  change.
   """
 
   @doc """
-  The main program entry point.
+  The main command-line program entry point.
 
   Takes the following command-line arguments:
 
@@ -33,7 +37,7 @@ defmodule ExploringMars do
     with {:ok, input_device} <- open_file_or_stdio(input, :read),
          {:ok, output_device} <- open_file_or_stdio(output, :write)
     do
-      run_missions(input_device, output_device)
+      MissionRunner.get_bounds_and_run(input_device, output_device)
     else
       {:error, err} -> IO.puts("Error opening device: " <> inspect err)
     end
@@ -55,79 +59,5 @@ defmodule ExploringMars do
   defp open_file_or_stdio(nil, _), do: {:ok, :stdio}
   defp open_file_or_stdio(path, mode) do
     File.open(path, [mode, :utf8])
-  end
-
-  # read bounds and then run missions
-  @spec run_missions(File.io_device, File.io_device) :: :ok
-  defp run_missions(input, output) do
-    case read_bounds(input) do
-      {:ok, bounds} ->
-        run_missions_in_bounds(bounds, input, output)
-        File.close(input)
-        File.close(output)
-      err -> IO.puts("Invalid bounds: " <> inspect(err))
-    end
-  end
-
-  # run 0 to N missions, given bounds
-  @spec run_missions_in_bounds(
-    Coordinate.t,
-    File.io_device,
-    File.io_device
-  ) :: :ok
-  defp run_missions_in_bounds(bounds, input, output) do
-    case read_position(input) do
-      :eof -> :ok
-      {:ok, position} ->
-        case read_instructions(input) do
-          :eof -> IO.puts("Unexpected end of file")
-          {:ok, instructions} ->
-            result = Mission.run(bounds, position, instructions)
-            IO.write(output, Mission.result_to_string(result))
-            run_missions_in_bounds(bounds, input, output)
-          err -> IO.write(output, "Unexpected error: " <> (inspect err))
-        end
-      err -> IO.write(output, "Unexpected error: " <> (inspect err))
-    end
-  end
-
-  # read bounds from input file
-  @spec read_bounds(File.io_device) :: {:ok, Coordinate.t} | term
-  defp read_bounds(device) do
-    with line when line != :eof <- IO.read(device, :line),
-         [x, y] <- String.split(line, " ")
-    do
-      Coordinate.from_strings(x, String.trim(y, "\n"))
-    else
-      l when is_list(l) -> {:invalid_bounds, l}
-      err -> err
-    end
-  end
-
-  # read position from input file
-  @spec read_position(File.io_device) :: {:ok, Position.t} | term
-  defp read_position(device) do
-    with line when line != :eof <- IO.read(device, :line),
-         [sx, sy, dir] <- String.split(line, " ")
-    do
-      Position.from_strings(sx, sy, String.trim(dir, "\n"))
-    else
-      l when is_list(l) -> {:invalid_position, l}
-      err -> err
-    end
-  end
-
-  # read instructions from input file as list
-  @spec read_instructions(File.io_device) :: {:ok, list(Instruction.t)} | term
-  defp read_instructions(device) do
-    case IO.read(device, :line) do
-      :eof -> :eof
-      {:error, err} -> {:error, err}
-      line ->
-        instructions = String.trim(line, "\n")
-        |> String.split(" ")
-        |> Enum.map(&Instruction.from_string/1)
-        {:ok, instructions}
-    end
   end
 end
