@@ -6,13 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.21.2">
     <meta name="project" content="exploring_mars v0.1.0">
-    <title>API Reference — exploring_mars v0.1.0</title>
+    <title>ExploringMars — exploring_mars v0.1.0</title>
     <link rel="stylesheet" href="dist/html-de2388dc2f8074b0a4db.css" />
     <script src="dist/sidebar_items-fbd62a58bd.js"></script>
       <script src="docs_config.js"></script>
     <script async src="dist/html-de2388dc2f8074b0a4db.js"></script>
   </head>
-  <body data-type="extras">
+  <body data-type="modules">
     <script>try { if(localStorage.getItem('night-mode') === 'true') document.body.className += ' night-mode'; } catch (e) { }</script>
 <div class="main">
 
@@ -63,75 +63,49 @@ exploring_mars      </a>
   <div class="content-outer">
     <div id="content" class="content-inner">
 
-<h1>
-  <small class="app-vsn">exploring_mars v0.1.0</small>
-  API Reference
-</h1>
+      <h1>
+        <small class="app-vsn">exploring_mars v0.1.0</small>
+ExploringMars      </h1>
 
-  <section class="details-list">
-    <h2 id="modules" class="section-heading">
-  <a href="#modules" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
-  Modules
-</h2>
 
-    <div class="summary">
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="ExploringMars.html">ExploringMars</a>
-  </div>
-    <div class="summary-synopsis"><p>Start reading here.</p></div>
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="ExploringMars.CLI.html">ExploringMars.CLI</a>
-  </div>
-    <div class="summary-synopsis"><p>Top-level module for the CLI application, encapsulating the
-interpretation of command-line arguments. Delegates actual execution to the
-<code class="inline">MissionRunner</code> module.</p></div>
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="ExploringMars.Mission.html">ExploringMars.Mission</a>
-  </div>
-    <div class="summary-synopsis"><p>This module defines a mission. A mission encapsulates a single run of a probe,
-being defined by a single set of problem parameters (bounds, initial position,
-and instructions).</p></div>
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="ExploringMars.Mission.Coordinate.html">ExploringMars.Mission.Coordinate</a>
-  </div>
-    <div class="summary-synopsis"><p>This module defines functions that create and operate on coordinates in the
-probe&#39;s space of movement.</p></div>
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="ExploringMars.Mission.Direction.html">ExploringMars.Mission.Direction</a>
-  </div>
-    <div class="summary-synopsis"><p>This module defines functions that create and operate on directions in the
-probe&#39;s coordinate space.</p></div>
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="ExploringMars.Mission.Instruction.html">ExploringMars.Mission.Instruction</a>
-  </div>
-    <div class="summary-synopsis"><p>This module defines functions that operate on the probe&#39;s instructions.</p></div>
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="ExploringMars.Mission.Position.html">ExploringMars.Mission.Position</a>
-  </div>
-    <div class="summary-synopsis"><p>This module defines functions that operate on the probe&#39;s position.</p></div>
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="ExploringMars.MissionRunner.html">ExploringMars.MissionRunner</a>
-  </div>
-    <div class="summary-synopsis"><p>File I/O handling module. Reads parameters from an <code class="inline">io_device</code> (which should
-be either a file or <code class="inline">:stdio</code> and runs each mission using the <code class="inline">Mission</code> module.</p></div>
-</div>
-    </div>
-  </section>
+        <section id="moduledoc">
+<p>Start reading here.</p>
+<p>The program defined in this project can be ran in three ways:</p>
+<ul>
+<li>It can be used as a CLI application
+</li>
+<li>It can be used interactively, reading the problem statement
+from files and running the program specification
+</li>
+<li>Or it can be used interactively, passing the problem statement
+to the relevant functions as an already-parsed data structure.
+</li>
+</ul>
+<p>There is a module encapsulating each of these ways of running the program:</p>
+<ul>
+<li><p><a href="ExploringMars.CLI.html"><code class="inline">ExploringMars.CLI</code></a> defines the CLI application. Running the command
+<a href="https://hexdocs.pm/mix/Mix.Tasks.Escript.Build.html"><code class="inline">mix escript.build</code></a> at the top-level of this project will generate a
+binary file named <code class="inline">exploring_mars</code> which can be ran on any computer which
+has an Erlang runtime available. For more information on this CLI 
+app, check the documentation for the <a href="ExploringMars.CLI.html"><code class="inline">ExploringMars.CLI</code></a> module.</p>
+</li>
+<li><p><a href="ExploringMars.MissionRunner.html"><code class="inline">ExploringMars.MissionRunner</code></a> defines the functions which read the
+input and write the output to files (or to standard input/output).
+Calling <a href="ExploringMars.MissionRunner.html#get_bounds_and_run/2"><code class="inline">ExploringMars.MissionRunner.get_bounds_and_run/2</code></a> passing in
+input and output files (or <code class="inline">:stdio</code> in any of the arguments) will
+attempt to read in bounds followed by a series of mission specifications
+(each mission specification consists of an initial position and a series
+of instructions), outputting the results to the specified output device.
+Note that this function reads from the input device until it finds EOF, so
+press Ctrl+D to end the input if reading from <code class="inline">:stdio</code>.</p>
+</li>
+<li><p><a href="ExploringMars.Mission.html"><code class="inline">ExploringMars.Mission</code></a> defines the functions which take the already-parsed
+data for a mission and return the result of the mission as an Elixir data
+structure. Check the module doc for more details. This is probably the module
+you should use if you want to use this from <code class="inline">iex</code>.</p>
+</li>
+</ul>
+        </section>
 
 
       <footer class="footer">
