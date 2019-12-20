@@ -31,10 +31,7 @@ defmodule ExploringMars.Mission.Instruction do
   Takes a probe position and an instruction and returns the next position of the
   probe.
   """
-  @spec run(
-    Position.t,
-    Instruction.t
-  ) :: Position.t | :invalid_instruction
+  @spec run(Position.t, t) :: Position.t | :invalid_instruction
   def run(position, instruction) do
     case instruction do
       :L -> Position.turn_left(position)
