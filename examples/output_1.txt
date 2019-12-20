@@ -1,0 +1,5 @@
+2 2 S
+Invalid coordinates: 1 K
+2 2 E
+OUT OF BOUNDS @ 0 4 N
+INVALID INSTRUCTION @ 0 3 N
